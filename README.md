@@ -1,2 +1,2 @@
 # ssi
-Módulo de infraestrutura Orientado a Objeto
+Sistema de Suporte Integrado - Módulo de chamados de TI
