@@ -43,10 +43,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     </style>
 </head>
 <!--<body class="hold-transition login-page">-->
-<body class="hold-transition sidebar-mini accent-success">
+<body class="hold-transition sidebar-mini accent-blue">
 <?php
 
-session_start(['name' => 'ssi']);
+session_start(['name' => 'ssi_informatica']);
 $view = $template->exibirViewController();
 if ($view == 'index'):
     require_once "./views/modulos/inicio/index.php";
@@ -66,7 +66,7 @@ else:
     ?>
     <div class="wrapper">
         <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-dark navbar-success">
+        <nav class="main-header navbar navbar-expand navbar-dark navbar-blue">
             <?php $template->navbar(); ?>
         </nav>
         <!-- /.navbar -->
@@ -78,7 +78,7 @@ else:
         <!-- /.content-wrapper -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-light-olive elevation-4">
+        <aside class="main-sidebar sidebar-light-blue elevation-4">
             <?php include $template->sidebar(); ?>
         </aside>
 

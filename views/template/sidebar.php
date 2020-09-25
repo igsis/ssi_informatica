@@ -5,7 +5,7 @@ $nomeUser = explode(' ', $_SESSION['nome_s'])[0];
 $telaInicial = $_SESSION['nivel_acesso_s'] == 1 ? SERVERURL."chamado" : SERVERURL."administrador"
 ?>
 <!-- Brand Logo -->
-<a href="<?= $telaInicial ?>" class="brand-link navbar-success text-white">
+<a href="<?= $telaInicial ?>" class="brand-link navbar-blue text-white">
     <img src="<?= SERVERURL ?>views/dist/img/logo_ssi.png" alt="SSI Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
     <span class="brand-text font-weight-light"><?= NOMESIS ?></span>
 </a>
@@ -43,7 +43,7 @@ $telaInicial = $_SESSION['nivel_acesso_s'] == 1 ? SERVERURL."chamado" : SERVERUR
                 </a>
             </li>
             <li class="nav-item">
-                <a href="http://smcsistemas.prefeitura.sp.gov.br/manual/ssi" target="_blank" class="nav-link">
+                <a href="http://smcsistemas.prefeitura.sp.gov.br/manual/ssi_informatica" target="_blank" class="nav-link">
                     <i class="fa fa-question"></i>&nbsp;
                     <p>Ajuda</p>
                 </a>
