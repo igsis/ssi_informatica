@@ -39,7 +39,7 @@ if (isset($_POST['usuario']) && (isset($_POST['senha']))) {
                     </div>
                     <!-- /.col -->
                     <div class="col-4">
-                        <button type="submit" class="btn btn-success btn-block">Entrar</button>
+                        <button type="submit" class="btn btn-primary btn-block">Entrar</button>
                     </div>
                     <!-- /.col -->
                 </div>

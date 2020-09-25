@@ -58,7 +58,7 @@ class UsuarioController extends UsuarioModel
     public function insereUsuario() {
         $erro = false;
         $dados = [];
-        $camposIgnorados = ["senha2", "_method", "rf_rg"];
+        $camposIgnorados = ["senha2", "_method", "rf_rg","jovem_monitor"];
         foreach ($_POST as $campo => $post) {
             if (!in_array($campo, $camposIgnorados)) {
                 $dados[$campo] = MainModel::limparString($post);
@@ -77,7 +77,7 @@ class UsuarioController extends UsuarioModel
         }
 
         // Valida email unique
-        $consultaEmail = DbModel::consultaSimples("SELECT email FROM usuarios WHERE email = '{$dados['email']}'");
+        $consultaEmail = DbModel::consultaSimples("SELECT email1 FROM usuarios WHERE email1 = '{$dados['email1']}'");
         if ($consultaEmail->rowCount() >= 1) {
             $erro = true;
             $alerta = [
