@@ -23,8 +23,6 @@
     'navbar-indigo',
     'navbar-purple',
     'navbar-pink',
-    'navbar-navy',
-    'navbar-lightblue',
     'navbar-teal',
     'navbar-cyan',
     'navbar-dark',
@@ -133,21 +131,6 @@
   var $flat_sidebar_container = $('<div />', {'class': 'mb-1'}).append($flat_sidebar_checkbox).append('<span>Sidebar nav flat style</span>')
   $container.append($flat_sidebar_container)
 
-  var $legacy_sidebar_checkbox = $('<input />', {
-    type   : 'checkbox',
-    value  : 1,
-    checked: $('.nav-sidebar').hasClass('nav-legacy'),
-    'class': 'mr-1'
-  }).on('click', function () {
-    if ($(this).is(':checked')) {
-      $('.nav-sidebar').addClass('nav-legacy')
-    } else {
-      $('.nav-sidebar').removeClass('nav-legacy')
-    }
-  })
-  var $legacy_sidebar_container = $('<div />', {'class': 'mb-1'}).append($legacy_sidebar_checkbox).append('<span>Sidebar nav legacy style</span>')
-  $container.append($legacy_sidebar_container)
-
   var $compact_sidebar_checkbox = $('<input />', {
     type   : 'checkbox',
     value  : 1,
@@ -242,7 +225,6 @@
     'bg-danger',
     'bg-success',
     'bg-indigo',
-    'bg-lightblue',
     'bg-navy',
     'bg-purple',
     'bg-fuchsia',
@@ -261,7 +243,6 @@
     'accent-danger',
     'accent-success',
     'accent-indigo',
-    'accent-lightblue',
     'accent-navy',
     'accent-purple',
     'accent-fuchsia',
@@ -280,7 +261,6 @@
     'sidebar-dark-danger',
     'sidebar-dark-success',
     'sidebar-dark-indigo',
-    'sidebar-dark-lightblue',
     'sidebar-dark-navy',
     'sidebar-dark-purple',
     'sidebar-dark-fuchsia',
@@ -296,7 +276,6 @@
     'sidebar-light-danger',
     'sidebar-light-success',
     'sidebar-light-indigo',
-    'sidebar-light-lightblue',
     'sidebar-light-navy',
     'sidebar-light-purple',
     'sidebar-light-fuchsia',
@@ -325,10 +304,10 @@
   }))
 
   $container.append('<h6>Dark Sidebar Variants</h6>')
-  var $sidebar_variants_dark = $('<div />', {
+  var $sidebar_variants = $('<div />', {
     'class': 'd-flex'
   })
-  $container.append($sidebar_variants_dark)
+  $container.append($sidebar_variants)
   $container.append(createSkinBlock(sidebar_colors, function () {
     var color         = $(this).data('color')
     var sidebar_class = 'sidebar-dark-' + color.replace('bg-', '')
@@ -341,10 +320,10 @@
   }))
 
   $container.append('<h6>Light Sidebar Variants</h6>')
-  var $sidebar_variants_light = $('<div />', {
+  var $sidebar_variants = $('<div />', {
     'class': 'd-flex'
   })
-  $container.append($sidebar_variants_light)
+  $container.append($sidebar_variants)
   $container.append(createSkinBlock(sidebar_colors, function () {
     var color         = $(this).data('color')
     var sidebar_class = 'sidebar-light-' + color.replace('bg-', '')
@@ -416,11 +395,4 @@
 
     return $block
   }
-
-  $('.product-image-thumb').on('click', function() {
-    const image_element = $(this).find('img');
-    $('.product-image').prop('src', $(image_element).attr('src'))
-    $('.product-image-thumb.active').removeClass('active');
-    $(this).addClass('active');
-  });
 })(jQuery)
