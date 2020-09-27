@@ -49,9 +49,8 @@ else{
                             <thead>
                             <tr>
                                 <th>Nº</th>
-                                <th>Local</th>
-                                <th>Contato</th>
                                 <th>Categoria</th>
+                                <th>Título</th>
                                 <th>Descrição</th>
                                 <th>Data abertura</th>
                                 <th>Status</th>
@@ -62,9 +61,8 @@ else{
                             <?php foreach ($chamado AS $chamados):?>
                             <tr>
                                 <td><?= $chamados->id ?></td>
-                                <td><?= $chamados->local ?></td>
-                                <td><?= $chamados->contato ?></td>
                                 <td><?= $chamados->categoria ?></td>
+                                <td><?= $chamados->titulo ?></td>
                                 <td><?= mb_strimwidth($chamados->descricao,'0', '25', '...') ?></td>
                                 <td><?= date('d/m/Y', strtotime($chamados->data_abertura)) ?></td>
                                 <td><?= $chamados->status ?></td>
@@ -79,9 +77,8 @@ else{
                             <tfoot>
                             <tr>
                                 <th>Nº</th>
-                                <th>Local</th>
-                                <th>Contato</th>
                                 <th>Categoria</th>
+                                <th>Título</th>
                                 <th>Descrição</th>
                                 <th>Data abertura</th>
                                 <th>Status</th>
