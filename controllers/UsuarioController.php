@@ -58,7 +58,8 @@ class UsuarioController extends UsuarioModel
     public function insereUsuario() {
         $erro = false;
         $dados = [];
-        $camposIgnorados = ["senha2", "_method", "rf_rg","jovem_monitor"];
+        $dados['email1'] = $_POST['email1']."@prefeitura.sp.gov.br";
+        $camposIgnorados = ["senha2", "_method", "rf_rg","jovem_monitor", "email1"];
         foreach ($_POST as $campo => $post) {
             if (!in_array($campo, $camposIgnorados)) {
                 $dados[$campo] = MainModel::limparString($post);
@@ -83,7 +84,7 @@ class UsuarioController extends UsuarioModel
             $alerta = [
                 'alerta' => 'simples',
                 'titulo' => "Erro!",
-                'texto' => "Email inserido já cadastrado. Tente novamente.",
+                'texto' => "Email#1 informado já foi cadastrado. Tente novamente.",
                 'tipo' => "error"
             ];
         }
