@@ -45,19 +45,13 @@ $nota = $notaObj->listaNota($id, false);
                             <div class="col-md">
                                 <b>Categoria:</b> <?= $chamado->categoria ?>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md">
                                 <b>Local:</b> <?= $chamado->local ?>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md">
-                                <b>Telefone:</b> <?= $chamado->telefone ?>
-                            </div>
-                            <div class="col-md">
-                                <b>Email:</b> <?= $chamado->email ?>
-                            </div>
-                            <div class="col-md">
-                                <b>Contato:</b> <?= $chamado->contato ?>
+                                <b>Título:</b> <?= $chamado->titulo ?>
                             </div>
                         </div>
                         <div class="row">
@@ -68,9 +62,9 @@ $nota = $notaObj->listaNota($id, false);
                         <?php if ($nota): ?>
                             <div class="row">
                                 <div class="col-md">
-                                    <b>Notas</b>
+                                    <b>Notas:</b><br/>
                                     <?php foreach ($nota AS $notas): ?>
-                                        <p><b><?= date('d/m/Y H:i:s', strtotime($notas->data)) ?></b> <?= $notas->nota ?></p>
+                                        <b><?= date('d/m/Y H:i:s', strtotime($notas->data)) . " - " . strstr($notas->nome, ' ', true) ?>:</b> <?= $notas->nota ?><br>
                                     <?php endforeach; ?>
                                 </div>
                             </div>

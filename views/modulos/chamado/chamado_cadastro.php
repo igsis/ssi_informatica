@@ -1,6 +1,7 @@
 <?php
 require_once "./controllers/UsuarioController.php";
 require_once "./controllers/LocalController.php";
+require_once "./controllers/AdministradorController.php";
 
 $id = !empty($_GET['id']) ? $_GET['id'] : false;
 
@@ -10,6 +11,8 @@ $usuario = $usuarioObj->recuperaUsuario($_SESSION['usuario_id_s'])->fetchObject(
 $localObj = new LocalController();
 $admin = $localObj->recuperaAdministrador('', $usuario->local_id)->fetchObject();
 
+$admObj = new AdministradorController();
+$categorias = $admObj->listaCategorias();
 ?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -52,50 +55,34 @@ $admin = $localObj->recuperaAdministrador('', $usuario->local_id)->fetchObject()
                         <?php endif; ?>
                         <div class="card-body">
                             <div class="row">
-                                <div class="form-group col-md">
-                                    <label for="telefone">Telefone: *</label>
-                                    <input type="text" id="telefone" name="telefone" onkeyup="mascara( this, mtel );"
-                                           class="form-control" placeholder="Digite o telefone" required
-                                           value="<?= $usuario->telefone ?? "" ?>" maxlength="15">
-                                </div>
-                                <div class="form-group col-md">
-                                    <label for="email">E-mail: *</label>
-                                    <input type="email" id="email" name="email" class="form-control" maxlength="120"
-                                           placeholder="Digite o E-mail" value="<?= $usuario->email ?? '' ?>" required>
-                                </div>
-                                <div class="form-group col-md">
-                                    <label for="contato">Contato: *</label>
-                                    <input type="text" id="contato" name="contato" class="form-control" maxlength="120"
-                                           placeholder="Digite o nome do contato no local"
-                                           value="<?= $usuario->contato ?? '' ?>" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-group">
-                                        <label>
-                                            Categorias: *
-                                            <button class="btn btn-default rounded-circle" type="button" data-toggle="modal"
-                                                    data-target="#infoCategorias">
-                                                <i class="fas fa-info-circle"></i>
-                                            </button>
-                                        </label>
-                                        <select class="form-control select2bs4" style="width: 100%;"
-                                                name="categoria_id">
-                                            <option value="">Selecione uma opção...</option>
-                                            <?php
-                                            $usuarioObj->geraOpcao("categorias", "", true);
-                                            ?>
-                                        </select>
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="form-group col-md">
+                                            <label for="titulo">Título: *</label>
+                                            <input type="text" id="titulo" name="titulo" class="form-control" maxlength="60" placeholder="Digite o título do chamado" value="<?= $usuario->titulo ?? '' ?>" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-md">
+                                            <label for="categoria">Categorias: *
+                                                <button class="btn btn-sm btn-default rounded-circle" type="button" data-toggle="modal" data-target="#infoCategorias">
+                                                    <i class="fas fa-info-circle"></i>
+                                                </button>
+                                            </label>
+                                            <select class="form-control select2bs4" style="width: 100%;" id="categoria" name="categoria_id">
+                                                <option value="">Selecione uma opção...</option>
+                                                <?php $usuarioObj->geraOpcao("categorias", "", true); ?>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md">
-                                    <div class="form-group">
-                                        <label for="descricao">Descrição: *</label>
-                                        <textarea name="descricao" id="descricao" class="form-control" rows="3"
-                                                  required></textarea>
+                                <div class="form-group col-6">
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <label for="descricao">Descrição: *</label>
+                                            <textarea name="descricao" id="descricao" class="form-control" rows="5"
+                                                      required></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -122,76 +109,16 @@ $admin = $localObj->recuperaAdministrador('', $usuario->local_id)->fetchObject()
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ModalTitulo">Modal title</h5>
+                <h5 class="modal-title" id="ModalTitulo">Categorias</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <h5>Alvenaria</h5>
-                <ul>
-                    <li>Reboco em paredes, muros, etc.</li>
-                    <li>Assentamento de tijplos e blocos.</li>
-                    <li>Impermeabilzação em geral.</li>
-                </ul>
-                <h5>Carpintaria</h5>
-                <ul>
-                    <li>Madeiramento.</li>
-                </ul>
-                <h5>Elétrica</h5>
-                <ul>
-                    <li>Troca de lâmpadas.</li>
-                    <li>Instalação de interruptores.</li>
-                    <li>Iluminação de emergência.</li>
-                </ul>
-                <h5>Geral</h5>
-                <ul>
-                    <li>Pesquisa de materiais como preço, qualidade, tipo, quantidade e descrição.</li>
-                    <li>Compra dos materiais.</li>
-                    <li>Limpeza.</li>
-                    <li>Organização / Conservação.</li>
-                    <li>Itens que não entram em classificações anteriores.</li>
-                </ul>
-                <h5>Hidráulica</h5>
-                <ul>
-                    <li>Conserto de vazamentos em tubulações.</li>
-                    <li>Troca de reparo em válvulas de descarga.</li>
-                    <li>Troca de válvulas de descargas, torneiras, registro, etc.</li>
-                    <li>Calhas e rufos.</li>
-                </ul>
-                <h5>Jardinagem</h5>
-                <ul>
-                    <li>Corte de grama.</li>
-                </ul>
-                <h5>Manutenção de equipamentos</h5>
-                <ul>
-                    <li>Microondas.</li>
-                    <li>Geladeiras.</li>
-                </ul>
-                <h5>Marcenaria</h5>
-                <ul>
-                    <li>Troca de fechaduras e puxadores.</li>
-                    <li>Troca de folha de porta.</li>
-                    <li>Confecção de molduras.</li>
-                    <li>Colagem de folha de revestimento como fórmica, post formic e lâmina de madeira.</li>
-                    <li>Polimento com cera / verniz.</li>
-                    <li>Cordões de acabamento.</li>
-                </ul>
-                <h5>Pintura</h5>
-                <ul>
-                    <li>Aplicação de verniz.</li>
-                    <li>Aplicação de latex acrílico e a base d'agua.</li>
-                    <li>Esmalte e tinta à óleo em madeiras, portas, janelas, grades, etc.</li>
-                    <li>Criação a base de cal.</li>
-                </ul>
-                <h5>Serralheria</h5>
-                <ul>
-                    <li>Consertos gerais.</li>
-                </ul>
-                <h5>Telhado</h5>
-                <ul>
-                    <li>Vazamentos.</li>
-                </ul>
+                <?php foreach ($categorias as $categoria): ?>
+                    <h5><?= $categoria->categoria ?></h5>
+                    <p><?= nl2br($categoria->descricao) ?></p>
+                <?php endforeach; ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">Fechar</button>
