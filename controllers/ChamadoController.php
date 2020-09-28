@@ -1,8 +1,10 @@
 <?php
 if ($pedidoAjax) {
     require_once "../models/MainModel.php";
+    require_once "../controllers/UsuarioController.php";
 } else {
     require_once "./models/MainModel.php";
+    require_once "./controllers/UsuarioController.php";
 }
 
 class ChamadoController extends MainModel
@@ -12,6 +14,11 @@ class ChamadoController extends MainModel
         /* executa limpeza nos campos */
         $dados = [];
         $pagina = $_POST['pagina'];
+        if ($pagina == "administrador"){
+            $idUsuario = $_POST['usuario_id'];
+            $usuario = DbModel::getInfo('usuarios',$idUsuario)->fetch(PDO::FETCH_OBJ);
+            $dados['local_id'] = $usuario->local_id;
+        }
         unset($_POST['_method']);
         unset($_POST['pagina']);
         foreach ($_POST as $campo => $post) {
@@ -91,11 +98,20 @@ class ChamadoController extends MainModel
     public function listaChamadoAdministrador($idAdministrador,$status)
     {
         return MainModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status FROM chamados ch 
+            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, ut.nome as tecnico 
+            FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id
                 INNER JOIN chamado_status cs on ch.status_id = cs.id
+                INNER JOIN usuarios uu on ch.usuario_id = uu.id
+                LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
             WHERE status_id IN ($status) AND ch.administrador_id = '$idAdministrador'")->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function listaTecnicoUnidade()
+    {
+        $unidade = DbModel::consultaSimples("SELECT instituicao_id FROM usuarios WHERE id = '{$_SESSION['usuario_id_s']}'")->fetchColumn();
+        return DbModel::consultaSimples("SELECT id, nome FROM usuarios WHERE instituicao_id = '$unidade' AND nivel_acesso_id != 1")->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function buscaChamadoAdministrador($dados)
@@ -132,128 +148,15 @@ class ChamadoController extends MainModel
     public function recuperaChamado($id)
     {
         $id = MainModel::decryption($id);
-        $chamado = DbModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status FROM chamados ch 
+        return DbModel::consultaSimples("
+            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, ut.nome as tecnico, uu.telefone, uu.email1 
+            FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id
-                INNER JOIN chamado_status cs on ch.status_id = cs.id    
+                INNER JOIN chamado_status cs on ch.status_id = cs.id
+                INNER JOIN usuarios uu on ch.usuario_id = uu.id
+                LEFT JOIN usuarios ut on ch.tecnico_id = ut.id    
             WHERE ch.id = '$id'
-        ")->fetchObject();
-        return $chamado;
-    }
-
-    public function insereFuncionarioChamado()
-    {
-        /* executa limpeza nos campos */
-        $dados = [];
-        $idChamado = $_POST['chamado_id'];
-        unset($_POST['_method']);
-        unset($_POST['id']);
-        foreach ($_POST as $campo => $post) {
-            $dados[$campo] = MainModel::limparString($post);
-        }
-        /* ./limpeza */
-
-        /* cadastro */
-        $insere = DbModel::insert('chamado_funcionarios', $dados);
-        if ($insere->rowCount() >= 1 || DbModel::connection()->errorCode() == 0) {
-            $id = DbModel::connection()->lastInsertId();
-            $alerta = [
-                'alerta' => 'sucesso',
-                'titulo' => 'Chamado',
-                'texto' => 'Funcionário cadastrado no chamado com sucesso!',
-                'tipo' => 'success',
-                'location' => SERVERURL . 'administrador/nota_cadastro&id=' . MainModel::encryption($idChamado)
-            ];
-        } else {
-            $alerta = [
-                'alerta' => 'simples',
-                'titulo' => 'Erro!',
-                'texto' => 'Erro ao salvar!',
-                'tipo' => 'error',
-                'location' => SERVERURL . 'administrador/nota_cadastro&id=' . MainModel::encryption($idChamado)
-            ];
-        }
-        /* ./cadastro */
-        return MainModel::sweetAlert($alerta);
-    }
-
-    public function editaFuncionarioChamado($id)
-    {
-        $idDecryp = MainModel::decryption($id);
-
-        $idChamado = $_POST['chamado_id'];
-        unset($_POST['_method']);
-        unset($_POST['id']);
-
-        $dados = [];
-        foreach ($_POST as $campo => $post) {
-            $dados[$campo] = MainModel::limparString($post);
-        }
-
-        $edita = DbModel::update('chamado_funcionarios', $dados, $idDecryp);
-        if ($edita->rowCount() >= 1 || DbModel::connection()->errorCode() == 0) {
-            $alerta = [
-                'alerta' => 'sucesso',
-                'titulo' => 'Funcionário / Material',
-                'texto' => 'Informações editadas com sucesso!',
-                'tipo' => 'success',
-                'location' => SERVERURL . 'administrador/nota_cadastro&id=' . MainModel::encryption($idChamado)
-            ];
-        } else {
-            $alerta = [
-                'alerta' => 'simples',
-                'titulo' => 'Erro!',
-                'texto' => 'Erro ao salvar!',
-                'tipo' => 'error',
-                'location' => SERVERURL . 'administrador/nota_cadastro&id=' . MainModel::encryption($idChamado)
-            ];
-        }
-        return MainModel::sweetAlert($alerta);
-    }
-
-    public function excluiFuncionarioChamado()
-    {
-        $id = $_POST['id'];
-        $idChamado = $_POST['idChamado'];
-        $exclui = DbModel::deleteEspecial("chamado_funcionarios", "id", $id);
-        if ($exclui->rowCount() >= 1 || DbModel::connection()->errorCode() == 0) {
-            $alerta = [
-                'alerta' => 'sucesso',
-                'titulo' => 'Funcionário / Material',
-                'texto' => 'Funcionário removido com sucesso!',
-                'tipo' => 'success',
-                'location' => SERVERURL . 'administrador/nota_cadastro&id=' . MainModel::encryption($idChamado)
-            ];
-        } else {
-            $alerta = [
-                'alerta' => 'simples',
-                'titulo' => 'Erro!',
-                'texto' => 'Erro ao salvar!',
-                'tipo' => 'error',
-                'location' => SERVERURL . 'administrador/nota_cadastro&id=' . MainModel::encryption($idChamado)
-            ];
-        }
-        return MainModel::sweetAlert($alerta);
-    }
-
-    public function listaFuncionarioChamado($idChamado)
-    {
-        $idChamado = MainModel::decryption($idChamado);
-        return DbModel::consultaSimples("
-            SELECT f.nome, f.cargo, cf.ferramentas, cf.id, f.id AS 'funcionario_id' FROM chamado_funcionarios cf 
-                INNER JOIN funcionarios f on cf.funcionario_id = f.id
-            WHERE cf.chamado_id = '$idChamado'
-        ")->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    public function recuperaFuncionarioChamado($id)
-    {
-        $id = MainModel::decryption($id);
-        return DbModel::consultaSimples("
-            SELECT f.nome, f.cargo, cf.ferramentas, cf.id FROM chamado_funcionarios cf 
-                INNER JOIN funcionarios f on cf.funcionario_id = f.id
-            WHERE cf.id = '$id'
         ")->fetchObject();
     }
 
@@ -318,12 +221,4 @@ class ChamadoController extends MainModel
         return $dados;
     }
 
-    public function recuperaChamadoFuncionario($id)
-    {
-        $id = MainModel::decryption($id);
-        $query = "SELECT * FROM chamado_funcionarios WHERE chamado_id = {$id}";
-        $resultado = DbModel::consultaSimples($query)->fetchObject();
-
-        return $resultado;
-    }
 }
