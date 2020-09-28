@@ -1,11 +1,9 @@
 <?php
 if ($pedidoAjax) {
     require_once "../models/ArquivoModel.php";
-    require_once "../controllers/FomentoController.php";
     define('UPLOADDIR', "../uploads/");
 } else {
     require_once "./models/ArquivoModel.php";
-    require_once "./controllers/FomentoController.php";
     define('UPLOADDIR', "./uploads/");
 }
 

@@ -55,7 +55,7 @@ $categorias = $admObj->listaCategorias();
                             <div class="row">
                                 <div class="form-group col-md">
                                     <label for="usuario_id">Usuário: *</label>
-                                    <select name="usuario_id" id="usuario_id" class="form-control" required>
+                                    <select name="usuario_id" id="usuario_id" class="form-control select2bs4" required>
                                         <option>Selecione uma opção</option>
                                         <?php $usuarioObj->geraOpcao("usuarios",""); ?>
                                     </select>

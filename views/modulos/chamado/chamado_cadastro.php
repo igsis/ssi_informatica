@@ -39,7 +39,7 @@ $categorias = $admObj->listaCategorias();
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form class="formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/chamadoAjax.php"
-                          role="form" data-form="<?= ($id) ? "update" : "save" ?>">
+                          role="form" data-form="<?= ($id) ? "update" : "save" ?>" enctype="multipart/form-data">
                         <input type="hidden" name="_method" value="<?= ($id) ? "editar" : "cadastrar" ?>">
                         <input type="hidden" name="pagina" value="chamado">
                         <input type="hidden" name="usuario_id" value="<?= $usuario->id ?>">
@@ -80,12 +80,26 @@ $categorias = $admObj->listaCategorias();
                                     <div class="col-md">
                                         <div class="form-group">
                                             <label for="descricao">Descrição: *</label>
-                                            <textarea name="descricao" id="descricao" class="form-control" rows="5"
-                                                      required></textarea>
+                                            <textarea name="descricao" id="descricao" class="form-control" rows="5" required></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!--<div class="row">
+                                <label>Envio de arquivos (máximo de 05 MB)</label>
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <input class="text-center" type='file' name='arquivos[]'><br>
+                                        </td>
+                                        <td>
+                                            <input class="text-center" type='file' name='arquivos[]'><br>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>-->
                         </div>
                         <div class="resposta-ajax"></div>
                         <!-- /.card-body -->
