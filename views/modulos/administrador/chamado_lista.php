@@ -12,7 +12,13 @@ if (isset($_GET['busca'])){
     $chamado = $chamadoObj->buscaChamadoAdministrador($filtros);
 }
 else{
-    $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2");
+    if ($_SESSION['nivel_acesso_s'] == 2){
+        $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2");
+    }
+    else {
+        //Corrigir aqui
+        $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2");
+    }
 }
 ?>
 <script>

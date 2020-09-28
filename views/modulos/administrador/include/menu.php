@@ -6,7 +6,8 @@
         </p>
     </a>
 </li>
-<li class="nav-item has-treeview">
+<?php if ($_SESSION['nivel_acesso_s'] == 2) : ?>
+    <li class="nav-item has-treeview">
     <a href="#" class="nav-link active">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
@@ -56,6 +57,15 @@
             </a>
         </li>
     </ul>
+</li>
+<?php endif; ?>
+<li class="nav-item">
+    <a href="<?= SERVERURL ?>administrador/usuario_lista" class="nav-link">
+        <i class="fas fa-users"></i>
+        <p>
+            Usuários
+        </p>
+    </a>
 </li>
 <li class="nav-item has-treeview menu-open">
     <a href="#" class="nav-link active">
