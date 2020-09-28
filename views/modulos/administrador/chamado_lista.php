@@ -15,6 +15,13 @@ else{
     $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2");
 }
 ?>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            window.location.reload(1);
+        }, 60000); //atualiza a cada 60 segundos
+    });
+</script>
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
