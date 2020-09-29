@@ -10,7 +10,7 @@ $usuario = $UsuarioObj->recuperaUsuario($id)->fetch();
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Usuário</h1>
+                <h1 class="m-0 text-dark">Minha conta</h1>
             </div><!-- /.col -->
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -35,19 +35,23 @@ $usuario = $UsuarioObj->recuperaUsuario($id)->fetch();
                             <input type="hidden" name="id" value="<?= $id ?>">
 
                             <div class="row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-8">
                                     <label for="nome">Nome: *</label>
                                     <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome completo" maxlength="120" value="<?=$usuario['nome']?>" required>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-md-8">
-                                    <label for="email">E-mail: *</label>
-                                    <input type="email" class="form-control" id="email" name="email" maxlength="120" value="<?=$usuario['email']?>" disabled>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="telefone">Telefone: *</label>
                                     <input type="text" data-mask="(00) 00000-0000" class="form-control" id="telefone" name="telefone" maxlength="15" onkeyup="mascara( this, mtel );" value="<?=$usuario['telefone']?>" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label for="email">E-mail 1#: *</label>
+                                    <input type="email" class="form-control" id="email" name="email1" maxlength="120" value="<?=$usuario['email1']?>" disabled>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="email">E-mail 2#: *</label>
+                                    <input type="email" class="form-control" id="email" name="email2" maxlength="120" value="<?=$usuario['email2']?>">
                                 </div>
                             </div>
 
