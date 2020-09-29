@@ -39,7 +39,7 @@ $locais = $localObj->listaLocais();
                                     <th>Local</th>
                                     <th>Instituição</th>
                                     <th>Telefone</th>
-                                    <th width="15%">Ações</th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -48,20 +48,20 @@ $locais = $localObj->listaLocais();
                                         <td><?=$local->local?></td>
                                         <td><?=$localObj->recuperaInstituicaoLocal($local->id)?></td>
                                         <td><?=$local->telefone?></td>
-                                        <td>
+                                        <td style="width: 22%">
                                             <div class="row">
                                                 <div class="col-6">
                                                     <a href="<?=SERVERURL?>administrador/local_cadastro&id=<?= $localObj->encryption($local->id) ?>"
-                                                       class="btn bg-gradient-primary float-left">
-                                                        Editar
+                                                       class="btn bg-gradient-primary">
+                                                        <i class="far fa-edit"></i> Editar
                                                     </a>
                                                 </div>
                                                 <div class="col-6">
                                                     <form class="formulario-ajax" data-form="delete" action="<?= SERVERURL ?>ajax/administradorAjax.php" method="post">
                                                         <input type="hidden" name="_method" value="removeLocal">
                                                         <input type="hidden" name="local_id" value="<?= $localObj->encryption($local->id) ?>">
-                                                        <button type="submit" class="btn bg-gradient-danger float-left">
-                                                            Remover
+                                                        <button type="submit" class="btn bg-gradient-danger">
+                                                            <i class="fas fa-trash"></i> Remover
                                                         </button>
                                                         <div class="resposta-ajax"></div>
                                                     </form>
