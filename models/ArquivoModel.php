@@ -8,36 +8,20 @@ if ($pedidoAjax) {
 
 class ArquivoModel extends MainModel
 {
-    protected function separaArquivosComProd($lista_documento_id) {
-        foreach ($_FILES as $file) {
-            $numArquivos = count($file['error']);
-            foreach ($file as $key => $dados) {
-                for ($i = 0; $i < $numArquivos; $i++) {
-                    $arquivos[$i][$key] = $file[$key][$i];
-                }
-            }
-        }
-        foreach ($arquivos as $key => $arquivo) {
-            $arquivos[$key]['lista_documento_id'] = $lista_documento_id;
-        }
-        return $arquivos;
-    }
-
-    /**
+     /**
      * @param $arquivos
      * @param $origem_id
      * @param $tamanhoMaximo
      * @param $validaPDF
      * @return mixed
      */
-    protected function enviaArquivos($arquivos, $origem_id, $tamanhoMaximo, $validaPDF = false, $fomento = false) {
+    protected function enviaArquivos($arquivos, $chamado_id, $tamanhoMaximo, $validaPDF = false) {
         foreach ($arquivos as $key => $arquivo) {
             $erros[$key]['bol'] = false;
             if ($arquivo['error'] != 4) {
                 $nomeArquivo = $arquivo['name'];
                 $tamanhoArquivo = $arquivo['size'];
                 $arquivoTemp = $arquivo['tmp_name'];
-                $lista_documento_id = $arquivo['lista_documento_id'];
                 $explode = explode('.', $nomeArquivo);
                 $extensao = strtolower(end($explode));
 
@@ -54,20 +38,10 @@ class ArquivoModel extends MainModel
 
                 if ($tamanhoArquivo <= $maximoPermitido) {
                     if (move_uploaded_file($arquivoTemp, UPLOADDIR . $novoNome)) {
-                        if (!$fomento) {
-                            $tabela = "arquivos";
-                            $dadosInsertArquivo = [
-                                'origem_id' => $origem_id,
-                                'lista_documento_id' => $lista_documento_id,
-                            ];
-                        } else {
-                            $tabela = "fom_arquivos";
-                            $dadosInsertArquivo = [
-                                'fom_projeto_id' => $origem_id,
-                                'fom_lista_documento_id' => $lista_documento_id,
-                            ];
-                        }
-
+                        $tabela = "arquivos";
+                        $dadosInsertArquivo = [
+                            'chamado_id' => $chamado_id
+                        ];
                         $dadosInsertArquivo['arquivo'] = $novoNome;
                         $dadosInsertArquivo['data'] = $dataAtual;
 
