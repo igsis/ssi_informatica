@@ -5,7 +5,7 @@ class ViewsModel
 {
     protected function verificaAcesso($nivel_acesso_id, $modulo)
     {
-        if ($nivel_acesso_id == 2) {
+        if ($nivel_acesso_id == 2 || $nivel_acesso_id == 3) {
             return true;
         } elseif ($modulo == "administrador") {
             return false;

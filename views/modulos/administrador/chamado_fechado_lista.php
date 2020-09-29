@@ -12,7 +12,12 @@ if (isset($_GET['busca'])){
     $chamado = $chamadoObj->buscaChamadoAdministrador($filtros);
 }
 else{
-    $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"3");
+    if ($_SESSION['nivel_acesso_s'] == 2){
+        $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"3");
+    }
+    else {
+        $chamado = $chamadoObj->listaChamadoTecnico($_SESSION['usuario_id_s'],"3");
+    }
 }
 ?>
 
@@ -52,8 +57,8 @@ else{
                                 <th>Local</th>
                                 <th>Contato</th>
                                 <th>Categoria</th>
-                                <th>Descrição</th>
                                 <th>Data abertura</th>
+                                <th>Técnico</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -63,10 +68,10 @@ else{
                             <tr>
                                 <td><?= $chamados->id ?></td>
                                 <td><?= $chamados->local ?></td>
-                                <td><?= $chamados->contato ?></td>
+                                <td><?= $chamados->usuario ?></td>
                                 <td><?= $chamados->categoria ?></td>
-                                <td><?= mb_strimwidth($chamados->descricao,'0', '25', '...') ?></td>
                                 <td><?= date('d/m/Y', strtotime($chamados->data_abertura)) ?></td>
+                                <td><?= $chamados->tecnico ?? 'não possui' ?></td>
                                 <td><?= $chamados->status ?></td>
                                 <td>
                                     <a href="nota_cadastro&id=<?= MainModel::encryption($chamados->id) ?>" class="btn btn-sm bg-primary">
@@ -82,8 +87,8 @@ else{
                                 <th>Local</th>
                                 <th>Contato</th>
                                 <th>Categoria</th>
-                                <th>Descrição</th>
                                 <th>Data abertura</th>
+                                <th>Técnico</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>

@@ -16,8 +16,7 @@ else{
         $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2");
     }
     else {
-        //Corrigir aqui
-        $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2");
+        $chamado = $chamadoObj->listaChamadoTecnico($_SESSION['usuario_id_s'],"1,2");
     }
 }
 ?>
@@ -79,7 +78,7 @@ else{
                                 <td><?= $chamados->usuario ?></td>
                                 <td><?= $chamados->categoria ?></td>
                                 <td><?= date('d/m/Y', strtotime($chamados->data_abertura)) ?></td>
-                                <td><?= $chamado->tecnico ?? 'não possui' ?></td>
+                                <td><?= $chamados->tecnico ?? 'não possui' ?></td>
                                 <td><?= $chamados->status ?></td>
                                 <td>
                                     <a href="nota_cadastro&id=<?= MainModel::encryption($chamados->id) ?>" class="btn btn-sm bg-primary">
