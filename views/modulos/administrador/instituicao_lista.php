@@ -66,13 +66,13 @@ $administradores = $administradorObj->listaAdmins();
                                                     data-id="<?= $instituicaoObj->encryption($instituicao->id) ?>"
                                                     data-instituicao="<?= $instituicao->instituicao ?>"
                                                     onclick="modalEdicao.bind(this)()">
-                                                Editar
+                                                <i class="far fa-edit"></i> Editar
                                             </button>
                                             <button type="button" class="btn bg-gradient-warning"
                                                     data-id="<?= $instituicaoObj->encryption($instituicao->id) ?>"
                                                     data-instituicao="<?= $instituicao->instituicao ?>"
                                                     onclick="modalAddAdm.bind(this)()">
-                                                Vincular Administrador
+                                                <i class="fas fa-link"></i> Vincular Administrador
                                             </button>
                                         </td>
                                     </tr>
@@ -105,7 +105,7 @@ $administradores = $administradorObj->listaAdmins();
                       method="post">
                     <input type="hidden" name="_method" id="_method" value="insereInstituicao">
                     <div class="modal-header">
-                        <h4 class="modal-title">Adicionar nova Instituicao</h4>
+                        <h4 class="modal-title">Adicionar nova instituição</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
