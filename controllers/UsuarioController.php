@@ -107,10 +107,18 @@ class UsuarioController extends UsuarioModel
 
     /* edita */
     public function editaUsuario($dados, $id){
-        $pagina = $_POST['pagina'];
+        $pagina =  $_POST['pagina'];
         unset($dados['_method']);
         unset($dados['id']);
         unset($dados['pagina']);
+        if ($pagina == "administrador/usuario_cadastro"){
+            $id = MainModel::decryption($id);
+            $email1 = $dados['email1']."@prefeitura.sp.gov.br";
+            unset($dados['email1']);
+            $dados['email1'] = $email1;
+            unset($dados['jovem_monitor']);
+            unset($dados['rf_rg']);
+        }
         $dados = MainModel::limpaPost($dados);
         $edita = DbModel::update('usuarios', $dados, $id);
         if ($edita) {
@@ -119,13 +127,37 @@ class UsuarioController extends UsuarioModel
                 'titulo' => 'Usuário',
                 'texto' => 'Informações alteradas com sucesso!',
                 'tipo' => 'success',
-                'location' => SERVERURL. $pagina
+                'location' => SERVERURL. $pagina.'&id='.MainModel::encryption($id)
             ];
         } else {
             $alerta = [
                 'alerta' => 'simples',
                 'titulo' => 'Erro!',
                 'texto' => 'Erro ao salvar!',
+                'tipo' => 'error',
+                'location' => SERVERURL.$pagina.'&id='.MainModel::encryption($id)
+            ];
+        }
+        return MainModel::sweetAlert($alerta);
+    }
+
+    public function apagaUsuario()
+    {
+        $pagina =  $_POST['pagina'];
+        $apaga = DbModel::apaga("usuarios",$_POST['id']);
+        if ($apaga) {
+            $alerta = [
+                'alerta' => 'sucesso',
+                'titulo' => 'Usuário',
+                'texto' => 'Usuário removido com sucesso!',
+                'tipo' => 'success',
+                'location' => SERVERURL. $pagina
+            ];
+        } else {
+            $alerta = [
+                'alerta' => 'simples',
+                'titulo' => 'Erro!',
+                'texto' => 'Erro ao remover usuário. Tente novamente!',
                 'tipo' => 'error',
                 'location' => SERVERURL.$pagina
             ];
@@ -144,6 +176,8 @@ class UsuarioController extends UsuarioModel
             ];
         }
         else{
+            $pagina = $_POST['pagina'];
+            unset($dados['pagina']);
             unset($dados['_method']);
             unset($dados['id']);
             unset($dados['senha2']);
@@ -156,7 +190,7 @@ class UsuarioController extends UsuarioModel
                     'titulo' => 'Usuário',
                     'texto' => 'Senha alterada com sucesso!',
                     'tipo' => 'success',
-                    'location' => SERVERURL.'inicio/edita'
+                    'location' => SERVERURL.$pagina
                 ];
             }
             else{
@@ -165,7 +199,7 @@ class UsuarioController extends UsuarioModel
                     'titulo' => 'Erro!',
                     'texto' => 'Erro ao salvar!',
                     'tipo' => 'error',
-                    'location' => SERVERURL.'inicio/edita'
+                    'location' => SERVERURL.$pagina
                 ];
             }
         }
@@ -173,12 +207,15 @@ class UsuarioController extends UsuarioModel
     }
 
     public function recuperaUsuario($id) {
-        $usuario = DbModel::getInfo('usuarios',$id);
-        return $usuario;
+        $tipo = strlen($id);
+        if ($tipo > 10){
+            $id = MainModel::decryption($id);
+        }
+        return DbModel::getInfo('usuarios',$id);
     }
 
     public function recuperaEmail($email){
-        return UsuarioModel::getExisteEmail($email);;
+        return UsuarioModel::getExisteEmail($email);
     }
 
     public function listaUsuarios($nivel_acesso)

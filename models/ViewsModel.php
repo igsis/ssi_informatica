@@ -60,7 +60,8 @@ class ViewsModel
             'categoria_lista',
             'chamado_fechado_lista',
             'tecnico_lista',
-            'usuario_lista'
+            'usuario_lista',
+            'usuario_cadastro'
         ];
         if (self::verificaModulo($modulo)) {
             $nivel_acesso_id = $_SESSION['nivel_acesso_s'] ?? 1;

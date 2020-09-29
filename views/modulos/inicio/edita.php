@@ -48,7 +48,7 @@ $usuario = $UsuarioObj->recuperaUsuario($id)->fetch();
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="email">E-mail 1#: *</label>
-                                    <input type="email" class="form-control" id="email" name="email1" maxlength="120" value="<?=$usuario['email1']?>" disabled>
+                                    <input type="email" class="form-control" id="email" maxlength="120" value="<?=$usuario['email1']?>" disabled>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="email">E-mail 2#: *</label>
@@ -97,6 +97,7 @@ $usuario = $UsuarioObj->recuperaUsuario($id)->fetch();
                     <div class="card-body register-card-body">
                         <form class="needs-validation formulario-ajax" data-form="update" action="<?=SERVERURL?>ajax/usuarioAjax.php" method="post">
                             <input type="hidden" name="_method" value="trocaSenhaUsuario">
+                            <input type="hidden" name="pagina" value="inicio/edita">
                             <input type="hidden" name="id" value="<?= $id ?>">
 
                             <div class="row">

@@ -49,7 +49,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= SERVERURL ?>administrador/tecnico_lista" class="nav-link" id="tecnicos">
+            <a href="<?= SERVERURL ?>administrador/tecnico_lista" class="nav-link" id="tecnico_lista">
                 <i class="nav-icon fas fa-circle"></i>
                 <p>
                     Técnicos
@@ -60,7 +60,7 @@
 </li>
 <?php endif; ?>
 <li class="nav-item">
-    <a href="<?= SERVERURL ?>administrador/usuario_lista" class="nav-link">
+    <a href="<?= SERVERURL ?>administrador/usuario_lista" id="usuario_lista" class="nav-link">
         <i class="fas fa-users"></i>
         <p>
             Usuários
