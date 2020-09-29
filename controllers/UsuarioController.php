@@ -179,8 +179,8 @@ class UsuarioController extends UsuarioModel
         return UsuarioModel::getExisteEmail($email);;
     }
 
-    public function listaUsuarios()
+    public function listaUsuarios($nivel_acesso)
     {
-        return DbModel::consultaSimples("SELECT * FROM usuarios WHERE publicado = 1 AND nivel_acesso_id = 1")->fetchAll(PDO::FETCH_OBJ);
+        return DbModel::consultaSimples("SELECT * FROM usuarios WHERE publicado = 1 AND nivel_acesso_id IN ($nivel_acesso)")->fetchAll(PDO::FETCH_OBJ);
     }
 }

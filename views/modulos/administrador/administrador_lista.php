@@ -2,7 +2,7 @@
 require_once "./controllers/AdministradorController.php";
 $administradorObj = new AdministradorController();
 
-$usuarios = $administradorObj->listaUsuarios();
+$usuarios = $administradorObj->listaUsuarios("1,3");
 $admins = $administradorObj->listaAdmins();
 ?>
 <!-- Content Header (Page header) -->
@@ -50,14 +50,14 @@ $admins = $administradorObj->listaAdmins();
                                     ?>
                                     <tr>
                                         <td><?=$admin->nome?></td>
-                                        <td><?=$admin->email?></td>
+                                        <td><?=$admin->email1?></td>
                                         <td><?=$admin->telefone?></td>
                                         <td>
                                             <?php
                                             if ($instituicoes) {
                                                 echo implode(", ", $instituicoes);
                                             } else {
-                                                echo "Nenhuma instituição vinculada";
+                                                echo "<a href='instituicao_lista' class='btn btn-sm btn-primary'><i class='fas fa-plus'></i>  Adicionar instituição</a>";
                                             }
                                             ?>
                                         </td>
@@ -66,7 +66,7 @@ $admins = $administradorObj->listaAdmins();
                                                 <input type="hidden" name="_method" value="removeAdmin">
                                                 <input type="hidden" name="usuario_id" value="<?= $administradorObj->encryption($admin->id) ?>">
                                                 <button type="submit" class="form-control btn btn-sm bg-gradient-danger">
-                                                    Remover Admin.
+                                                    <i class="fas fa-trash"></i>  Remover Admin.
                                                 </button>
                                                 <div class="resposta-ajax"></div>
                                             </form>
