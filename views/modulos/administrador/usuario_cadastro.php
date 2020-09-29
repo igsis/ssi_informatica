@@ -34,17 +34,17 @@ if ($id){
                         <h3 class="card-title">Usuários</h3>
                     </div>
                     <!-- /.card-header -->
-                    <div class="card-body">
-                        <form class="needs-validation formulario-ajax" data-form="<?= ($id) ? "update" : "save" ?>" action="<?= SERVERURL ?>ajax/usuarioAjax.php" method="post">
-                            <input type="hidden" name="_method" value="<?= ($id) ? "editaUsuario" : "insereNovoUsuario" ?>">
-                            <input type="hidden" name="pagina" value="administrador/usuario_cadastro">
-                            <?php if ($id): ?>
-                                <input type="hidden" name="id" id="id" value="<?= $id ?>">
-                            <?php endif; ?>
-                            <?php if (!$id): ?>
-                                <input type="hidden" name="senha" value="ssi2020">
-                                <input type="hidden" name="senha2" value="ssi2020">
-                            <?php endif; ?>
+                    <form class="needs-validation formulario-ajax" data-form="<?= ($id) ? "update" : "save" ?>" action="<?= SERVERURL ?>ajax/usuarioAjax.php" method="post">
+                        <input type="hidden" name="_method" value="<?= ($id) ? "editaUsuario" : "insereNovoUsuario" ?>">
+                        <input type="hidden" name="pagina" value="administrador/usuario_lista">
+                        <?php if ($id): ?>
+                            <input type="hidden" name="id" id="id" value="<?= $id ?>">
+                        <?php endif; ?>
+                        <?php if (!$id): ?>
+                            <input type="hidden" name="senha" value="ssi2020">
+                            <input type="hidden" name="senha2" value="ssi2020">
+                        <?php endif; ?>
+                        <div class="card-body">
                             <div class="row">
                                 <div class="form-group col-md-4">
                                     <label for="nome">Nome Completo* </label>
@@ -95,16 +95,17 @@ if ($id){
                                     </select>
                                 </div>
 
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label for="email">E-mail Prefeitura *</label>
-                                    <input type="text" class="form-control" name="email1" placeholder="Ex.: smcinfo" <?php if ($id) echo "value='".strstr($usuario->email1,'@',true)."'" ?> required id="email">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="email1"placeholder="Ex.: smcinfo" <?php if ($id) echo "value='".strstr($usuario->email1,'@',true)."'" ?> required id="email">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">@prefeitura.sp.gov.br</span>
+                                        </div>
+                                    </div>
                                     <div class="invalid-feedback">
                                         <strong>Email já cadastrado</strong>
                                     </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label>&nbsp;</label><br>
-                                    @prefeitura.sp.gov.br
                                 </div>
                                 <div class="form-group col-md">
                                     <label for="email">E-mail alternativo *</label>
@@ -114,13 +115,12 @@ if ($id){
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-primary btn-block btn-flat" id="cadastra">Cadastrar</button>
-                            </div>
-                            <div class="resposta-ajax"></div>
-                        </form>
-                    </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary float-right" id="cadastra"><?=$id ? "Editar" : "Cadastrar"?></button>
+                        </div>
+                        <div class="resposta-ajax"></div>
+                    </form>
                     <!-- /.card-body -->
                 </div>
                 <!-- /.card -->
@@ -252,12 +252,12 @@ if ($id){
         }
     });
 
-    const url = `<?=$url_local?>`;
+    const url_local = '<?= $url_local ?>';
 
-    let instituicao = document.querySelector("#instituicao");
+    let instituicao = document.querySelector('#instituicao');
 
     if(instituicao.value != ''){
-        let local_id = <?=$usuario->local_id?>;
+        let local_id = <?=$usuario->local_id ?? "''"?>;
         getSublinguagem(instituicao.value, local_id)
     }
 
@@ -265,20 +265,33 @@ if ($id){
         let idInstituicao = $('#instituicao option:checked').val();
         getSublinguagem(idInstituicao, '')
 
-        fetch(`${url}?instituicao_id=${idInstituicao}`)
+        fetch(`${url_local}?instituicao_id=${idInstituicao}`)
             .then(response => response.json())
             .then(locais => {
                 $('#local option').remove();
-                $('#local').append('<option value="">Selecione... </option>');
+                $('#local').append('<option value="">Selecione uma opção...</option>');
 
                 for (const local of locais) {
                     $('#local').append(`<option value='${local.id}'>${local.local}</option>`).focus();
+
+                }
+
+                if (idInstituicao == 1){
+                    let locais = document.querySelector('#local');
+                    locais.value = 1;
+                    $('#local').attr('readonly', true);
+                    $('#local').on('mousedown', function(e) {
+                        e.preventDefault();
+                    });
+                } else {
+                    $('#local').unbind('mousedown');
+                    $('#local').removeAttr('readonly');
                 }
             })
-    })
+    });
 
     function getSublinguagem(idInstituicao, selectedId){
-        fetch(`${url}?instituicao_id=${idInstituicao}`)
+        fetch(`${url_local}?instituicao_id=${idInstituicao}`)
             .then(response => response.json())
             .then(locais => {
                 $('#local option').remove();
