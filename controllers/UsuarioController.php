@@ -58,8 +58,10 @@ class UsuarioController extends UsuarioModel
     public function insereUsuario() {
         $erro = false;
         $dados = [];
+        $pagina = isset($_POST['pagina']) ? SERVERURL.$_POST['pagina'] : SERVERURL;
+
         $dados['email1'] = $_POST['email1']."@prefeitura.sp.gov.br";
-        $camposIgnorados = ["senha2", "_method", "rf_rg","jovem_monitor", "email1"];
+        $camposIgnorados = ["_method", "pagina", "senha2", "jovem_monitor", "rf_rg", "email1"];
         foreach ($_POST as $campo => $post) {
             if (!in_array($campo, $camposIgnorados)) {
                 $dados[$campo] = MainModel::limparString($post);
@@ -98,7 +100,7 @@ class UsuarioController extends UsuarioModel
                     'titulo' => 'Usuário Cadastrado!',
                     'texto' => "Usuário cadastrado com Sucesso! Seu usuário é <b>{$dados['usuario']}</b>",
                     'tipo' => 'success',
-                    'location' => SERVERURL
+                    'location' => $pagina
                 ];
             }
         }
@@ -107,18 +109,18 @@ class UsuarioController extends UsuarioModel
 
     /* edita */
     public function editaUsuario($dados, $id){
-        $pagina =  $_POST['pagina'];
-        unset($dados['_method']);
-        unset($dados['id']);
-        unset($dados['pagina']);
-        if ($pagina == "administrador/usuario_cadastro"){
-            $id = MainModel::decryption($id);
-            $email1 = $dados['email1']."@prefeitura.sp.gov.br";
-            unset($dados['email1']);
-            $dados['email1'] = $email1;
-            unset($dados['jovem_monitor']);
-            unset($dados['rf_rg']);
+        $camposIgnorados = ["_method", "pagina", "jovem_monitor", "rf_rg", "id"];
+
+        foreach ($camposIgnorados as $campo) {
+            unset($dados[$campo]);
         }
+
+        $pagina =  $_POST['pagina'];
+        if ($pagina == "administrador/usuario_lista"){
+            $id = MainModel::decryption($id);
+            $dados['email1'] = "{$dados['email1']}@prefeitura.sp.gov.br";
+        }
+
         $dados = MainModel::limpaPost($dados);
         $edita = DbModel::update('usuarios', $dados, $id);
         if ($edita) {

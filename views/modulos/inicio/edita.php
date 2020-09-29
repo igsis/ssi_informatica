@@ -47,11 +47,11 @@ $usuario = $UsuarioObj->recuperaUsuario($id)->fetch();
                             </div>
                             <div class="row">
                                 <div class="form-group col-md-6">
-                                    <label for="email">E-mail 1#: *</label>
+                                    <label for="email">E-mail Prefeitura: *</label>
                                     <input type="email" class="form-control" id="email" maxlength="120" value="<?=$usuario['email1']?>" disabled>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label for="email">E-mail 2#: *</label>
+                                    <label for="email">E-mail Alternativo: *</label>
                                     <input type="email" class="form-control" id="email" name="email2" maxlength="120" value="<?=$usuario['email2']?>">
                                 </div>
                             </div>
