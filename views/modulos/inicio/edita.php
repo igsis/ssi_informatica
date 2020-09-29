@@ -32,6 +32,7 @@ $usuario = $UsuarioObj->recuperaUsuario($id)->fetch();
                     <div class="card-body register-card-body">
                         <form class="form-horizontal formulario-ajax" method="POST" action="<?=SERVERURL?>ajax/usuarioAjax.php" role="form" data-form="update">
                             <input type="hidden" name="_method" value="editaUsuario">
+                            <input type="hidden" name="pagina" value="inicio/edita">
                             <input type="hidden" name="id" value="<?= $id ?>">
 
                             <div class="row">

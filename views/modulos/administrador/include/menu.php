@@ -49,7 +49,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="<?= SERVERURL ?>administrador/tecnicos" class="nav-link" id="tecnicos">
+            <a href="<?= SERVERURL ?>administrador/tecnico_lista" class="nav-link" id="tecnicos">
                 <i class="nav-icon fas fa-circle"></i>
                 <p>
                     Técnicos

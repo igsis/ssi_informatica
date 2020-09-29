@@ -107,8 +107,10 @@ class UsuarioController extends UsuarioModel
 
     /* edita */
     public function editaUsuario($dados, $id){
+        $pagina = $_POST['pagina'];
         unset($dados['_method']);
         unset($dados['id']);
+        unset($dados['pagina']);
         $dados = MainModel::limpaPost($dados);
         $edita = DbModel::update('usuarios', $dados, $id);
         if ($edita) {
@@ -117,7 +119,7 @@ class UsuarioController extends UsuarioModel
                 'titulo' => 'Usuário',
                 'texto' => 'Informações alteradas com sucesso!',
                 'tipo' => 'success',
-                'location' => SERVERURL.'inicio/edita'
+                'location' => SERVERURL. $pagina
             ];
         } else {
             $alerta = [
@@ -125,7 +127,7 @@ class UsuarioController extends UsuarioModel
                 'titulo' => 'Erro!',
                 'texto' => 'Erro ao salvar!',
                 'tipo' => 'error',
-                'location' => SERVERURL.'inicio/edita'
+                'location' => SERVERURL.$pagina
             ];
         }
         return MainModel::sweetAlert($alerta);
@@ -181,6 +183,6 @@ class UsuarioController extends UsuarioModel
 
     public function listaUsuarios($nivel_acesso)
     {
-        return DbModel::consultaSimples("SELECT * FROM usuarios WHERE publicado = 1 AND nivel_acesso_id IN ($nivel_acesso)")->fetchAll(PDO::FETCH_OBJ);
+        return DbModel::consultaSimples("SELECT u.*, i.instituicao, l.local FROM usuarios u INNER JOIN instituicoes i on u.instituicao_id = i.id INNER JOIN locais l on i.id = l.instituicao_id WHERE u.publicado = 1 AND nivel_acesso_id IN ($nivel_acesso)")->fetchAll(PDO::FETCH_OBJ);
     }
 }
