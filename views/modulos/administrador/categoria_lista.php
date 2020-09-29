@@ -50,13 +50,13 @@ $categorias = $administradorObj->listaCategorias()
                                                 data-id="<?= $administradorObj->encryption($categoria->id) ?>"
                                                 data-categoria="<?= $categoria->categoria ?>"
                                                 onclick="modalEditaCategoria(this)">
-                                            Editar
+                                            <i class="far fa-edit"></i> Editar
                                         </button>
                                         <form class="formulario-ajax" data-form="delete" action="<?= SERVERURL ?>ajax/administradorAjax.php" method="post">
                                             <input type="hidden" name="_method" value="removeCategoria">
                                             <input type="hidden" name="categoria_id" value="<?= $administradorObj->encryption($categoria->id) ?>">
                                             <button type="submit" class="btn bg-gradient-danger">
-                                                Remover
+                                                <i class="fas fa-trash"></i> Remover
                                             </button>
                                             <div class="resposta-ajax"></div>
                                         </form>
