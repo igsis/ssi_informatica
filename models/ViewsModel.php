@@ -97,15 +97,18 @@ class ViewsModel
     protected function exibirMenuModel ($modulo) {
         if (self::verificaModulo($modulo)) {
             $nivel_acesso_id = $_SESSION['nivel_acesso_s'] ?? 1;
-            $acesso = self::verificaAcesso($nivel_acesso_id, $modulo);
-            if ($acesso) {
-                if (is_file("./views/modulos/$modulo/include/menu.php")) {
-                    $menu = "./views/modulos/$modulo/include/menu.php";
-                } else {
+
+            switch ($nivel_acesso_id){
+                case 1:
+                    $menu = "./views/modulos/chamado/include/menu.php";
+                    break;
+                case 2:
+                case 3:
+                    $menu = "./views/modulos/administrador/include/menu.php";
+                    break;
+                default:
                     $menu = "./views/template/menuExemplo.php";
-                }
-            } else {
-                $menu = "./views/modulos/chamado/include/menu.php";
+                    break;
             }
         } else {
             $menu = "./views/template/menuExemplo.php";
