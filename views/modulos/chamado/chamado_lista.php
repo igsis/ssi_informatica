@@ -53,6 +53,7 @@ else{
                                 <th>Título</th>
                                 <th>Descrição</th>
                                 <th>Data abertura</th>
+                                <th>Técnico</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>
@@ -65,6 +66,7 @@ else{
                                 <td><?= $chamados->titulo ?></td>
                                 <td><?= mb_strimwidth($chamados->descricao,'0', '25', '...') ?></td>
                                 <td><?= date('d/m/Y', strtotime($chamados->data_abertura)) ?></td>
+                                <td><?= $chamados->tecnico ?? "não possui" ?></td>
                                 <td><?= $chamados->status ?></td>
                                 <td>
                                     <a href="nota_cadastro&id=<?= MainModel::encryption($chamados->id) ?>" class="btn btn-sm bg-primary">
@@ -81,6 +83,7 @@ else{
                                 <th>Título</th>
                                 <th>Descrição</th>
                                 <th>Data abertura</th>
+                                <th>Técnico</th>
                                 <th>Status</th>
                                 <th></th>
                             </tr>

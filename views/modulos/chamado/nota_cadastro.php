@@ -53,6 +53,9 @@ $nota = $notaObj->listaNota($id, false);
                             <div class="col-md">
                                 <b>Título:</b> <?= $chamado->titulo ?>
                             </div>
+                            <div class="col-md">
+                                <b>Técnico:</b> <?= $chamado->tecnico ?>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md">

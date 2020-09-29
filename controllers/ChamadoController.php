@@ -98,10 +98,11 @@ class ChamadoController extends MainModel
     {
         //$idUsuario = MainModel::decryption($idUsuario);
         return DbModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status FROM chamados ch 
+            SELECT ch.*, c.categoria, l.local, cs.status, u.nome as tecnico FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id
-                INNER JOIN chamado_status cs on ch.status_id = cs.id    
+                INNER JOIN chamado_status cs on ch.status_id = cs.id
+                LEFT JOIN usuarios u on ch.tecnico_id = u.id
             WHERE usuario_id = '$idUsuario' ORDER BY status_id, id")->fetchAll(PDO::FETCH_OBJ);
     }
 
