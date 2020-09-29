@@ -35,8 +35,8 @@ class ChamadoController extends MainModel
             /*
              * envio de arquivo
              */
-            //$arquivoObj = new ArquivoController();
-            //$enviar = $arquivoObj->enviarArquivo($id,$pagina);
+            $arquivoObj = new ArquivoController();
+            $enviar = $arquivoObj->enviarArquivo($arquivoObj->encryption($id),$pagina);
             /*
              * envio de arquivo
              */
