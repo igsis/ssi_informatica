@@ -109,7 +109,6 @@ class UsuarioController extends UsuarioModel
     
     public function editaUsuario($dados, $id){
         $camposIgnorados = ["_method", "pagina", "jovem_monitor", "rf_rg", "id"];
-
         foreach ($camposIgnorados as $campo) {
             unset($dados[$campo]);
         }
