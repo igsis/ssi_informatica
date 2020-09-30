@@ -11,13 +11,21 @@ class ArquivoController extends ArquivoModel
 {
     public function listarArquivosEnviados($chamado_id) {
         $chamado_id = MainModel::decryption($chamado_id);
-        return DbModel::consultaSimples("SELECT * FROM arquivos WHERE chamado_id = '$chamado_id' AND publicado = '1'");
+        return DbModel::consultaSimples("SELECT * FROM arquivos WHERE chamado_id = '$chamado_id' AND publicado = '1'")->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function enviarArquivo($chamado_id, $pagina) {
         unset($_POST['pagina']);
         $chamado_id = MainModel::decryption($chamado_id);
-        $erros = ArquivoModel::enviaArquivos($_FILES, $chamado_id,5, false);
+        foreach ($_FILES as $file) {
+            $numArquivos = count($file['error']);
+            foreach ($file as $key => $dados) {
+                for ($i = 0; $i < $numArquivos; $i++) {
+                    $arquivos[$i][$key] = $file[$key][$i];
+                }
+            }
+        }
+        $erros = ArquivoModel::enviaArquivos($arquivos, $chamado_id,5, false);
         $erro = MainModel::in_array_r(true, $erros, true);
 
         if ($erro) {

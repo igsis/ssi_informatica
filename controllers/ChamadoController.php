@@ -32,21 +32,27 @@ class ChamadoController extends MainModel
         $insere = DbModel::insert('chamados', $dados);
         if ($insere->rowCount() >= 1 || DbModel::connection()->errorCode() == 0) {
             $id = DbModel::connection()->lastInsertId();
-            /*
-             * envio de arquivo
-             */
+            /* envio de arquivo*/
             $arquivoObj = new ArquivoController();
-            $enviar = $arquivoObj->enviarArquivo($arquivoObj->encryption($id),$pagina);
-            /*
-             * envio de arquivo
-             */
-            $alerta = [
-                'alerta' => 'sucesso',
-                'titulo' => 'Chamado',
-                'texto' => 'Chamado cadastrado com sucesso!',
-                'tipo' => 'success',
-                'location' => SERVERURL . $pagina . '/nota_cadastro&id=' . MainModel::encryption($id)
-            ];
+            $enviarArquivo = $arquivoObj->enviarArquivo($arquivoObj->encryption($id),$pagina);
+            /* ./envio de arquivo */
+            if ($enviarArquivo){
+                $alerta = [
+                    'alerta' => 'sucesso',
+                    'titulo' => 'Chamado',
+                    'texto' => 'Chamado cadastrado com sucesso!',
+                    'tipo' => 'success',
+                    'location' => SERVERURL . $pagina . '/nota_cadastro&id=' . MainModel::encryption($id)
+                ];
+            } else {
+                $alerta = [
+                    'alerta' => 'simples',
+                    'titulo' => 'Erro!',
+                    'texto' => 'Erro ao salvar!',
+                    'tipo' => 'error',
+                    'location' => SERVERURL . $pagina . '/chamado_cadastro'
+                ];
+            }
         } else {
             $alerta = [
                 'alerta' => 'simples',

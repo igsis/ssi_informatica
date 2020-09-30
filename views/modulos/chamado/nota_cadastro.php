@@ -1,6 +1,7 @@
 <?php
 require_once "./controllers/ChamadoController.php";
 require_once "./controllers/NotaController.php";
+require_once "./controllers/ArquivoController.php";
 
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -9,6 +10,9 @@ $chamado = $chamadoObj->recuperaChamado($id);
 
 $notaObj = new NotaController();
 $nota = $notaObj->listaNota($id, false);
+
+$arquivoObj = new ArquivoController();
+$arquivos = $arquivoObj->listarArquivosEnviados($id);
 ?>
 <!-- Content Header (Page header) -->
 <div class="content-header">
@@ -28,7 +32,7 @@ $nota = $notaObj->listaNota($id, false);
         <div class="row">
             <div class="col-md-12">
                 <!-- Horizontal Form -->
-                <div class="card card-outline card-green">
+                <div class="card card-outline card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Dados</h3>
                     </div>
@@ -54,14 +58,29 @@ $nota = $notaObj->listaNota($id, false);
                                 <b>Título:</b> <?= $chamado->titulo ?>
                             </div>
                             <div class="col-md">
-                                <b>Técnico:</b> <?= $chamado->tecnico ?>
+                                <b>Técnico:</b> <?= $chamado->tecnico ?? "não possui" ?>
                             </div>
+                            <?php if ($chamado->status_id == 3): ?>
+                                <div class="col-md">
+                                    <b>Data encerramento:</b> <?= date('d/m/Y', strtotime($chamado->data_encerramento)) ?>
+                                </div>
+                            <?php endif;?>
                         </div>
                         <div class="row">
                             <div class="col-md">
                                 <b>Descrição:</b> <?= $chamado->descricao ?>
                             </div>
                         </div>
+                        <?php if ($arquivos): ?>
+                            <div class="row">
+                                <div class="col-md">
+                                    <b>Arquivos:</b><br/>
+                                    <?php foreach ($arquivos as $arquivo): ?>
+                                        <b><?= date('d/m/Y H:i:s', strtotime($arquivo->data)) ?>:</b> <a href="<?=SERVERURL?>uploads/<?=$arquivo->arquivo?>" target="_blank"> <?= substr($arquivo->arquivo,15) ?></a><br>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         <?php if ($nota): ?>
                             <div class="row">
                                 <div class="col-md">
@@ -72,6 +91,13 @@ $nota = $notaObj->listaNota($id, false);
                                 </div>
                             </div>
                         <?php endif; ?>
+                        <?php if ($chamado->status_id == 3): ?>
+                            <div class="row">
+                                <div class="col-md">
+                                    <b>Solução:</b> <?= $chamado->solucao ?>
+                                </div>
+                            </div>
+                        <?php endif;?>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -82,7 +108,7 @@ $nota = $notaObj->listaNota($id, false);
             <div class="row">
             <div class="col-md-12">
                 <!-- Horizontal Form -->
-                <div class="card card-green">
+                <div class="card card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Adicionar nota</h3>
                     </div>
@@ -106,7 +132,7 @@ $nota = $notaObj->listaNota($id, false);
                         <div class="resposta-ajax"></div>
                         <!-- /.card-body -->
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-success float-right">Gravar</button>
+                            <button type="submit" class="btn btn-primary float-right">Gravar</button>
                         </div>
                         <!-- /.card-footer -->
                         <div class="resposta-ajax"></div>
