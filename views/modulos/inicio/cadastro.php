@@ -258,18 +258,6 @@ $objUsuario = new UsuarioController();
                     $('#local').append(`<option value='${local.id}'>${local.local}</option>`).focus();
 
                 }
-
-                if (idInstituicao == 1){
-                    let locais = document.querySelector('#local');
-                    locais.value = 2;
-                    $('#local').attr('readonly', true);
-                    $('#local').on('mousedown', function(e) {
-                        e.preventDefault();
-                    });
-                } else {
-                    $('#local').unbind('mousedown');
-                    $('#local').removeAttr('readonly');
-                }
             })
     });
 </script>
