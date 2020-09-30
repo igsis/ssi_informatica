@@ -106,8 +106,7 @@ class UsuarioController extends UsuarioModel
         }
         return MainModel::sweetAlert($alerta);
     }
-
-    /* edita */
+    
     public function editaUsuario($dados, $id){
         $camposIgnorados = ["_method", "pagina", "jovem_monitor", "rf_rg", "id"];
 
