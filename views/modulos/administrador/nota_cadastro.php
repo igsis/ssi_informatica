@@ -1,6 +1,7 @@
 <?php
 require_once "./controllers/ChamadoController.php";
 require_once "./controllers/NotaController.php";
+require_once "./controllers/ArquivoController.php";
 
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 
@@ -10,6 +11,9 @@ $tecnicos = $chamadoObj->listaTecnicoUnidade();
 
 $notaObj = new NotaController();
 $nota = $notaObj->listaNota($id);
+
+$arquivoObj = new ArquivoController();
+$arquivos = $arquivoObj->listarArquivosEnviados($id);
 
 if ($chamado->status_id == 3){
     $disabled = "disabled";
@@ -35,7 +39,7 @@ if ($chamado->status_id == 3){
         <div class="row">
             <div class="col-md-9">
                 <!-- Horizontal Form -->
-                <div class="card card-outline card-green">
+                <div class="card card-outline card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Dados</h3>
 
@@ -81,6 +85,16 @@ if ($chamado->status_id == 3){
                                 <b>Descrição:</b> <?= $chamado->descricao ?>
                             </div>
                         </div>
+                        <?php if ($arquivos): ?>
+                            <div class="row">
+                                <div class="col-md">
+                                    <b>Arquivos:</b><br/>
+                                    <?php foreach ($arquivos as $arquivo): ?>
+                                        <b><?= date('d/m/Y H:i:s', strtotime($arquivo->data)) ?>:</b> <a href="<?=SERVERURL?>uploads/<?=$arquivo->arquivo?>" target="_blank"> <?= substr($arquivo->arquivo,15) ?></a><br>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <!-- /.card -->
@@ -88,7 +102,7 @@ if ($chamado->status_id == 3){
             <div class="col-md-3">
                 <div class="row">
                     <div class="col-md">
-                        <div class="card card-outline card-green">
+                        <div class="card card-outline card-primary">
                             <div class="card-header"><h3 class="card-title">Alterar status para:</h3></div>
                             <!-- form start -->
                             <div class="card-body">
@@ -138,7 +152,7 @@ if ($chamado->status_id == 3){
                 <?php if ($chamado->status_id == 2): ?>
                     <div class="row">
                         <div class="col-md">
-                            <div class="card card-outline card-green">
+                            <div class="card card-outline card-primary">
                                 <div class="card-header"><h3 class="card-title">Trocar de técnico:</h3></div>
                                 <!-- form start -->
                                 <div class="card-body">
@@ -155,7 +169,7 @@ if ($chamado->status_id == 3){
                                                 </select>
                                             </div>
                                             <div class="col-md-2">
-                                                <button type="submit" class="btn btn-success">Gravar</button>
+                                                <button type="submit" class="btn btn-primary">Gravar</button>
                                             </div>
                                         </div>
                                         <div class="resposta-ajax"></div>
@@ -172,10 +186,10 @@ if ($chamado->status_id == 3){
         <div class="row">
             <div class="col-md">
                 <!-- Horizontal Form -->
-                <div class="card card-outline card-green">
+                <div class="card card-outline card-primary">
                     <div class="card-header">
                         <h3 class="card-title">Notas</h3>
-                        <button type="button" class="btn btn-sm btn-success float-right" data-toggle="modal" data-target="#modal-notas" <?=$disabled?>>
+                        <button type="button" class="btn btn-sm btn-primary float-right" data-toggle="modal" data-target="#modal-notas" <?=$disabled?>>
                             <i class="fas fa-plus"></i> Adicionar
                         </button>
                     </div>
@@ -200,7 +214,7 @@ if ($chamado->status_id == 3){
             <div class="row">
                 <div class="col-md-12">
                     <!-- Horizontal Form -->
-                    <div class="card card-outline card-green">
+                    <div class="card card-outline card-primary">
                         <div class="card-header">
                             <h3 class="card-title">Solução</h3>
                         </div>
@@ -255,7 +269,7 @@ if ($chamado->status_id == 3){
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                    <button type="submit" class="btn btn-success">Gravar</button>
+                    <button type="submit" class="btn btn-primary">Gravar</button>
                 </div>
             </div>
             <div class="resposta-ajax"></div>
@@ -289,7 +303,7 @@ if ($chamado->status_id == 3){
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Gravar</button>
+                    <button type="submit" class="btn btn-primary">Gravar</button>
                 </div>
                 <div class="resposta-ajax"></div>
             </form>
