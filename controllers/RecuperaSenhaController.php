@@ -315,7 +315,7 @@ class RecuperaSenhaController extends RecuperaSenhaModel
 
     public function novaSenha($senha, $token)
     {
-        $query = "SELECT `email` FROM `capac_new`.`resete_senhas` WHERE token = '".$token."'";
+        $query = "SELECT `email` FROM `resete_senhas` WHERE token = '".$token."'";
         $resultado = DbModel::consultaSimples($query);
         if ($resultado->rowCount() == 1) {
             $email = $resultado->fetch(PDO::FETCH_COLUMN);
