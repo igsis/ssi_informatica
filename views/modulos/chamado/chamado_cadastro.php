@@ -85,7 +85,7 @@ $categorias = $admObj->listaCategorias();
                                     </div>
                                 </div>
                             </div>
-                            <!--<div class="row">
+                            <div class="row">
                                 <label>Envio de arquivos (máximo de 05 MB)</label>
                                 <table class="table table-striped">
                                     <tbody>
@@ -99,7 +99,7 @@ $categorias = $admObj->listaCategorias();
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>-->
+                            </div>
                         </div>
                         <div class="resposta-ajax"></div>
                         <!-- /.card-body -->
