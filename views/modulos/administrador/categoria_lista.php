@@ -36,19 +36,22 @@ $categorias = $administradorObj->listaCategorias()
                     <div class="card-body">
                         <table id="tabela" class="table table-bordered table-striped">
                             <thead>
-                            <tr>
-                                <th>Categoria</th>
-                                <th>Ações</th>
-                            </tr>
+                                <tr>
+                                    <th>Categoria</th>
+                                    <th>Descrição</th>
+                                    <th>Ações</th>
+                                </tr>
                             </thead>
                             <tbody>
                             <?php foreach ($categorias as $categoria): ?>
                                 <tr>
                                     <td><?= $categoria->categoria ?></td>
+                                    <td><?= $categoria->descricao ?></td>
                                     <td>
                                         <button type="button" class="btn bg-gradient-primary float-left mr-2"
                                                 data-id="<?= $administradorObj->encryption($categoria->id) ?>"
                                                 data-categoria="<?= $categoria->categoria ?>"
+                                                data-descricao="<?= $categoria->descricao ?>"
                                                 onclick="modalEditaCategoria(this)">
                                             <i class="far fa-edit"></i> Editar
                                         </button>
@@ -66,10 +69,11 @@ $categorias = $administradorObj->listaCategorias()
 
                             </tbody>
                             <tfoot>
-                            <tr>
-                                <th>Categoria</th>
-                                <th>Ações</th>
-                            </tr>
+                                <tr>
+                                    <th>Categoria</th>
+                                    <th>Descrição</th>
+                                    <th>Ações</th>
+                                </tr>
                             </tfoot>
                         </table>
                     </div>
@@ -91,15 +95,19 @@ $categorias = $administradorObj->listaCategorias()
                 <input type="hidden" name="_method" id="method">
                 <input type="hidden" name="categoria_id" id="categoria_id">
                 <div class="modal-header">
-                    <h4 class="modal-title">Adicionar nova Instituicao</h4>
+                    <h4 class="modal-title"></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="instituicao">Categoria: *</label>
+                        <label for="categoria">Categoria: *</label>
                         <input type="text" name="categoria" class="form-control" id="categoria" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao">Descrição: *</label>
+                        <input type="text" name="descricao" class="form-control" id="descricao" required>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -121,11 +129,13 @@ $categorias = $administradorObj->listaCategorias()
         let method = modal.find('#method');
         let titulo = modal.find('.modal-title');
         let cpoCategoria = modal.find('#categoria');
+        let cpoDescricao = modal.find('#descricao');
         let cpoCategoriaId = modal.find('#categoria_id');
 
         titulo.text('Adicionar Categoria');
         method.val('insereCategoria');
         cpoCategoria.val('');
+        cpoDescricao.val('');
         cpoCategoriaId.attr('disabled', true)
         modal.modal('show');
     }
@@ -135,13 +145,16 @@ $categorias = $administradorObj->listaCategorias()
         let method = modal.find('#method');
         let titulo = modal.find('.modal-title');
         let cpoCategoria = modal.find('#categoria');
+        let cpoDescricao = modal.find('#descricao');
         let cpoCategoriaId = modal.find('#categoria_id');
         let categoria = $(e).data('categoria');
+        let descricao = $(e).data('descricao');
         let categoria_id = $(e).data('id');
 
         titulo.text('Editar Categoria ' + categoria);
         method.val('editaCategoria');
         cpoCategoria.val(categoria);
+        cpoDescricao.val(descricao);
         cpoCategoriaId.attr('disabled', false);
         cpoCategoriaId.val(categoria_id);
         modal.modal('show');
