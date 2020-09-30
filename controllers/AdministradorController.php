@@ -242,7 +242,7 @@ class AdministradorController extends UsuarioController
     {
         unset($_POST['_method']);
 
-        $dado['categoria'] = MainModel::limparString($_POST['categoria']);
+        $dado = MainModel::limpaPost($_POST);
 
         $insert = DbModel::insert('categorias', $dado);
         if ($insert) {
@@ -273,7 +273,7 @@ class AdministradorController extends UsuarioController
         unset($_POST['_method']);
         unset($_POST['categoria_id']);
 
-        $dado['categoria'] = MainModel::limparString($_POST['categoria']);
+        $dado = MainModel::limpaPost($_POST);
 
         $update = DbModel::update('categorias', $dado, $id);
         if ($update->rowCount() >= 1 || DbModel::connection()->errorCode() == 0) {
