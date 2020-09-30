@@ -92,6 +92,21 @@ $categorias = $admObj->listaCategorias();
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <label>Envio de arquivos (máximo de 05 MB)</label>
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <input class="text-center" type='file' name='arquivos[]'><br>
+                                        </td>
+                                        <td>
+                                            <input class="text-center" type='file' name='arquivos[]'><br>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="resposta-ajax"></div>
                         <!-- /.card-body -->
