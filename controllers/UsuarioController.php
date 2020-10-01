@@ -237,6 +237,11 @@ class UsuarioController extends UsuarioModel
         return DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function listaUsuariosApagados()
+    {
+        return DbModel::consultaSimples("SELECT u.*, i.instituicao, l.local, na.nivel_acesso FROM usuarios u INNER JOIN instituicoes i on u.instituicao_id = i.id INNER JOIN locais l on u.local_id = l.id INNER JOIN nivel_acessos na on u.nivel_acesso_id = na.id WHERE u.publicado = 0")->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function listaInstituicoesTecnicos($usuario_id)
     {
 

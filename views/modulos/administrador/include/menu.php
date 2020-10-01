@@ -56,6 +56,14 @@
                 </p>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="<?= SERVERURL ?>administrador/usuario_apagado_lista" class="nav-link" id="usuario_apagado_lista">
+                <i class="nav-icon fas fa-circle"></i>
+                <p>
+                    Usuários removidos
+                </p>
+            </a>
+        </li>
     </ul>
 </li>
 <?php endif; ?>
