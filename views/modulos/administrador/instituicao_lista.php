@@ -232,7 +232,7 @@ $tecnicos = $administradorObj->listaUsuarios(3);
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Selecione um ou mais Técnicos:</label>
-                            <select class="select2bs4" name="tecnicos[]" multiple id="admins">
+                            <select class="select2bs4" name="tecnicos[]" multiple id="tecnicos">
                                 <option>Selecione...</option>
                                 <?php foreach ($tecnicos as $tecnico): ?>
                                     <option value="<?= $tecnico->id ?>"><?= $tecnico->nome ?></option>
@@ -277,7 +277,7 @@ $javascript = '
         let nomeInstituicao = $(this).data("instituicao");
         let instituicao_id = $(this).data("id");
         
-        selectionar(instituicao_id);
+        selectionar("recuperaAdministrador", instituicao_id, "#admins");
                 
         titulo.text("Vincular administrador a instituição: " + nomeInstituicao);
         cpoInstituicaoId.val(instituicao_id);
@@ -287,21 +287,21 @@ $javascript = '
     function modalAddTcn() {
         let titulo = $(".titulo-addTcn");
         let cpoInstituicaoId = $("#instituicao-addTcn");
-        let nomeInstituicao = $(this).data("instituicao");
         let instituicao_id = $(this).data("id");
+        let nomeInstituicao = $(this).data("instituicao");
         
-        selectionar(instituicao_id);
+        selectionar("recuperaTecnico", instituicao_id, "#tecnicos");
                 
         titulo.text("Vincular técnico a instituição: " + nomeInstituicao);
         cpoInstituicaoId.val(instituicao_id);
         $("#vincular-tcn").modal("show");
     }
     
-    function selectionar(instituicao){
+    function selectionar(_method, instituicao, campo){
         
         let dados = {
-          _method: "recuperaAdministrador",
-          id: instituicao  
+          _method: _method,
+          id: instituicao
         };
         
         let  resultado = $.ajax({
@@ -311,7 +311,7 @@ $javascript = '
         })
         .done(function (resultado){
             let admins = JSON.parse(resultado);
-            let select = $("#admins");
+            let select = $(campo);
             let ids = [];
             if (admins.length > 0){
                 for (let admin of admins){
