@@ -40,15 +40,17 @@ $administradores = $administradorObj->listaAdmins();
                         <div class="card-body">
                             <table id="tabela" class="table table-bordered table-striped">
                                 <thead>
-                                <tr>
-                                    <th>Instituição</th>
-                                    <th>Administrador</th>
-                                    <th width="30%">Ações</th>
-                                </tr>
+                                    <tr>
+                                        <th>Instituição</th>
+                                        <th>Administrador</th>
+                                        <th>Técnicos</th>
+                                        <th width="30%">Ações</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 <?php foreach ($instituicoes as $instituicao):
                                     $instituicaoAdmins = $instituicaoObj->recuperaAdmins($instituicao->id);
+                                    $instituicaoTecnicos = $instituicaoObj->recuperaTecnicos($instituicao->id);
                                     ?>
                                     <tr>
                                         <td><?= $instituicao->instituicao ?></td>
@@ -58,6 +60,15 @@ $administradores = $administradorObj->listaAdmins();
                                                 echo implode("<br>", $instituicaoAdmins);
                                             } else {
                                                 echo "Nenhum administrador vinculado";
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            if ($instituicaoTecnicos) {
+                                                echo implode("<br>", $instituicaoTecnicos);
+                                            } else {
+                                                echo "Nenhum técnico vinculado";
                                             }
                                             ?>
                                         </td>
@@ -80,11 +91,12 @@ $administradores = $administradorObj->listaAdmins();
 
                                 </tbody>
                                 <tfoot>
-                                <tr>
-                                    <th>Instituição</th>
-                                    <th>Administrador</th>
-                                    <th>Ações</th>
-                                </tr>
+                                    <tr>
+                                        <th>Instituição</th>
+                                        <th>Administrador</th>
+                                        <th>Técnicos</th>
+                                        <th>Ações</th>
+                                    </tr>
                                 </tfoot>
                             </table>
                         </div>
