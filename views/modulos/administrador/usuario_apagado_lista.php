@@ -102,3 +102,11 @@ $usuarios = $usuarioObj->listaUsuariosApagados();
         $('[data-toggle="tooltip"]').tooltip()
     })
 </script>
+
+<?php
+$javascript = <<<JAVASCRIPT
+<script>
+    $('#gerenciarSistema').addClass('menu-open');
+</script>"
+JAVASCRIPT;
+?>

@@ -152,3 +152,11 @@ $usuarios = $usuarioObj->listaUsuarios("1,2");
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<?php
+$javascript = <<<JAVASCRIPT
+<script>
+    $('#gerenciarSistema').addClass('menu-open');
+</script>"
+JAVASCRIPT;
+?>

@@ -145,3 +145,11 @@ $admins = $administradorObj->listaAdmins();
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<?php
+$javascript = <<<JAVASCRIPT
+<script>
+    $('#gerenciarSistema').addClass('menu-open');
+</script>"
+JAVASCRIPT;
+?>

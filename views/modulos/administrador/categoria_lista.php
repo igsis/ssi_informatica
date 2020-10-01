@@ -160,3 +160,11 @@ $categorias = $administradorObj->listaCategorias()
         modal.modal('show');
     }
 </script>
+
+<?php
+$javascript = <<<JAVASCRIPT
+<script>
+    $('#gerenciarSistema').addClass('menu-open');
+</script>"
+JAVASCRIPT;
+?>

@@ -334,4 +334,12 @@ $javascript = '
         });
     }
 </script>';
+
+
+$javascript = <<<JAVASCRIPT
+<script>
+    $('#gerenciarSistema').addClass('menu-open');
+</script>"
+JAVASCRIPT;
+
 ?>
