@@ -74,7 +74,7 @@ else{
                             <?php foreach ($chamado AS $chamados):?>
                             <tr>
                                 <td><?= $chamados->id ?></td>
-                                <td><?= $chamados->local ?></td>
+                                <td><?= $chamados->local ?> (<?= $chamados->instituicao ?>)</td>
                                 <td><?= $chamados->usuario ?></td>
                                 <td><?= $chamados->categoria ?></td>
                                 <td><?= date('d/m/Y', strtotime($chamados->data_abertura)) ?></td>

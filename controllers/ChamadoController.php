@@ -125,9 +125,9 @@ class ChamadoController extends MainModel
             WHERE status_id IN ($status) AND ch.administrador_id = '$idAdministrador'")->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function listaChamadoTecnico($idTecnico,$status)
+    /*public function listaChamadoTecnico($idTecnico,$status)
     {
-        $instituicao = MainModel::consultaSimples("SELECT instituicao_id FROM usuarios WHERE id = '$idTecnico'")->fetchColumn();
+        //$instituicao = MainModel::consultaSimples("SELECT instituicao_id FROM usuarios WHERE id = '$idTecnico'")->fetchColumn();
         return MainModel::consultaSimples("
             SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, ut.nome as tecnico 
             FROM chamados ch 
@@ -137,7 +137,23 @@ class ChamadoController extends MainModel
                 INNER JOIN chamado_status cs on ch.status_id = cs.id
                 INNER JOIN usuarios uu on ch.usuario_id = uu.id
                 LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
-            WHERE status_id IN ($status) AND (ch.tecnico_id = '$idTecnico' OR ch.tecnico_id IS NULL) AND i2.id = '$instituicao'")->fetchAll(PDO::FETCH_OBJ);
+                LEFT JOIN tecnico_instituicao ti on i2.id = ti.instituicao_id
+            WHERE status_id IN ($status) AND (ch.tecnico_id = '$idTecnico' OR ch.tecnico_id IS NULL) AND ti.instituicao_id = '$instituicao'")->fetchAll(PDO::FETCH_OBJ);
+    }*/
+
+    public function listaChamadoTecnico($idTecnico,$status)
+    {
+        return MainModel::consultaSimples("
+            SELECT ch.*, c.categoria, l.local,i2.instituicao, cs.status, uu.nome as usuario, ut.nome as tecnico 
+            FROM chamados ch    
+                INNER JOIN categorias c on ch.categoria_id = c.id
+                INNER JOIN usuarios uu on ch.usuario_id = uu.id
+                INNER JOIN chamado_status cs on ch.status_id = cs.id
+                INNER JOIN locais l on ch.local_id = l.id
+                INNER JOIN instituicoes i2 on l.instituicao_id = i2.id
+                LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
+                LEFT JOIN tecnico_instituicao ti on i2.id = ti.instituicao_id
+            WHERE status_id IN ($status) AND (ch.tecnico_id = '$idTecnico' OR (ch.tecnico_id IS NULL AND ti.tecnico_id = '$idTecnico'))")->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function listaTecnicoUnidade()
