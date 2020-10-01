@@ -123,7 +123,7 @@ class UsuarioController extends UsuarioModel
         $edita = DbModel::update('usuarios', $dados, $id);
         if ($edita) {
 
-            if ($pagina = "administrador/tecnico_lista") {
+            if ($pagina == "administrador/tecnico_lista") {
                 if ($dados['nivel_acesso_id'] == 3) {
                     if (!parent::getInstituicaoTecnico($id)) {
                         parent::insereTecnicoInstituicao($id);
