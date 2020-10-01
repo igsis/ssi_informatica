@@ -233,7 +233,8 @@ class UsuarioController extends UsuarioModel
 
     public function listaUsuarios($nivel_acesso)
     {
-        return DbModel::consultaSimples("SELECT u.*, i.instituicao, l.local FROM usuarios u INNER JOIN instituicoes i on u.instituicao_id = i.id INNER JOIN locais l on i.id = l.instituicao_id WHERE u.publicado = 1 AND nivel_acesso_id IN ($nivel_acesso)")->fetchAll(PDO::FETCH_OBJ);
+        $sql = "SELECT u.*, i.instituicao, l.local FROM usuarios u INNER JOIN instituicoes i on u.instituicao_id = i.id INNER JOIN locais l on u.local_id = l.id WHERE u.publicado = 1 AND nivel_acesso_id IN ($nivel_acesso)";
+        return DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function listaInstituicoesTecnicos($usuario_id)
