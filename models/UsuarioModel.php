@@ -31,4 +31,17 @@ class UsuarioModel extends MainModel
         $resultado = DbModel::consultaSimples($query);
         return $resultado;
     }
+
+    protected function getInstituicaoTecnico($id)
+    {
+        return DbModel::consultaSimples("SELECT tecnico_id FROM tecnico_instituicao WHERE tecnico_id = '$id'")->rowCount();
+    }
+
+    protected function insereTecnicoInstituicao($id)
+    {
+        $dados['instituicao_id'] = DbModel::consultaSimples("SELECT instituicao_id FROM usuarios WHERE id = '$id'")->fetchColumn();
+        $dados['tecnico_id'] = $id;
+
+        DbModel::insert('tecnico_instituicao', $dados);
+    }
 }

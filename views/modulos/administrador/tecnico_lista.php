@@ -40,19 +40,28 @@ $usuarios = $usuarioObj->listaUsuarios("1,2");
                                 <th>Nome</th>
                                 <th>E-mail</th>
                                 <th>Telefone</th>
-                                <th>Instituição</th>
+                                <th>Instituição(ões) Atribuída(s)</th>
                                 <th>Local</th>
                                 <th>Ações</th>
                             </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($tecnicos as $user):
+                                    $instituicoes = $usuarioObj->listaInstituicoesTecnicos($user->id)
                                     ?>
                                     <tr>
                                         <td><?=$user->nome?></td>
                                         <td><?=$user->email1?></td>
                                         <td><?=$user->telefone?></td>
-                                        <td><?=$user->instituicao?></td>
+                                        <td>
+                                            <?php
+                                            if ($instituicoes) {
+                                                echo implode(", ", $instituicoes);
+                                            } else {
+                                                echo "<a href='instituicao_lista' class='btn btn-sm btn-primary'><i class='fas fa-plus'></i>  Adicionar instituição</a>";
+                                            }
+                                            ?>
+                                        </td>
                                         <td><?=$user->local?></td>
                                         <td>
                                             <div class="row">

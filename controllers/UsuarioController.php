@@ -122,6 +122,19 @@ class UsuarioController extends UsuarioModel
         $dados = MainModel::limpaPost($dados);
         $edita = DbModel::update('usuarios', $dados, $id);
         if ($edita) {
+
+            if ($pagina = "administrador/tecnico_lista") {
+                if ($dados['nivel_acesso_id'] == 3) {
+                    if (!parent::getInstituicaoTecnico($id)) {
+                        parent::insereTecnicoInstituicao($id);
+                    }
+                } elseif ($dados['nivel_acesso_id'] == 1){
+                    if (parent::getInstituicaoTecnico($id)) {
+                        DbModel::deleteEspecial('tecnico_instituicao', 'tecnico_id', $id);
+                    }
+                }
+            }
+
             $alerta = [
                 'alerta' => 'sucesso',
                 'titulo' => 'Usuário',
@@ -221,5 +234,14 @@ class UsuarioController extends UsuarioModel
     public function listaUsuarios($nivel_acesso)
     {
         return DbModel::consultaSimples("SELECT u.*, i.instituicao, l.local FROM usuarios u INNER JOIN instituicoes i on u.instituicao_id = i.id INNER JOIN locais l on i.id = l.instituicao_id WHERE u.publicado = 1 AND nivel_acesso_id IN ($nivel_acesso)")->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function listaInstituicoesTecnicos($usuario_id)
+    {
+
+        $sql = "SELECT i.instituicao FROM tecnico_instituicao AS ti
+                INNER JOIN instituicoes AS i ON ti.instituicao_id = i.id
+                WHERE ti.tecnico_id = '$usuario_id'";
+        return DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_COLUMN);
     }
 }
