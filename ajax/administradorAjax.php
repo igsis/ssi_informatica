@@ -27,6 +27,10 @@ if (isset($_POST['_method'])) {
             echo $administradorObj->vinculaAdm();
             break;
 
+        case 'vinculaTcn':
+            echo $administradorObj->vinculaTcn();
+            break;
+
         case 'insereLocal':
             echo $administradorObj->insereLocal();
             break;

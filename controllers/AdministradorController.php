@@ -147,6 +147,39 @@ class AdministradorController extends UsuarioController
         return MainModel::sweetAlert($alerta);
     }
 
+    public function vinculaTcn()
+    {
+
+        $instituicao_id = MainModel::decryption($_POST['instituicao_id']);
+        $tecnicos = $_POST['tecnicos'] ?? false;
+
+        if (!$tecnicos) {
+            $relacionamento = DbModel::deleteEspecial('tecnico_instituicao','instituicao_id',$instituicao_id);
+        } else {
+            $relacionamento = MainModel::atualizaRelacionamento('tecnico_instituicao', 'instituicao_id', $instituicao_id, 'tecnico_id', $tecnicos);
+        }
+
+        if ($relacionamento) {
+            $alerta = [
+                'alerta' => 'sucesso',
+                'titulo' => 'Tecnico(s) vinculados!',
+                'texto' => "Tecnico(s) viculado(s) a instituição",
+                'tipo' => 'success',
+                'location' => SERVERURL . 'administrador/instituicao_lista'
+            ];
+        } else {
+            $alerta = [
+                'alerta' => 'simples',
+                'titulo' => 'Erro!',
+                'texto' => 'Erro ao salvar!',
+                'tipo' => 'error',
+                'location' => SERVERURL . 'administrador/instituicao_lista'
+            ];
+        }
+
+        return MainModel::sweetAlert($alerta);
+    }
+
     public function insereLocal()
     {
         unset($_POST['_method']);

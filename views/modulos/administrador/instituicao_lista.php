@@ -7,6 +7,7 @@ $administradorObj = new AdministradorController();
 
 $instituicoes = $instituicaoObj->listaInstituicoes();
 $administradores = $administradorObj->listaAdmins();
+$tecnicos = $administradorObj->listaUsuarios(3);
 ?>
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -44,7 +45,7 @@ $administradores = $administradorObj->listaAdmins();
                                         <th>Instituição</th>
                                         <th>Administrador</th>
                                         <th>Técnicos</th>
-                                        <th width="30%">Ações</th>
+                                        <th width="35%">Ações</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -73,17 +74,23 @@ $administradores = $administradorObj->listaAdmins();
                                             ?>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn bg-gradient-primary"
+                                            <button type="button" class="btn btn-sm bg-gradient-primary"
                                                     data-id="<?= $instituicaoObj->encryption($instituicao->id) ?>"
                                                     data-instituicao="<?= $instituicao->instituicao ?>"
                                                     onclick="modalEdicao.bind(this)()">
                                                 <i class="far fa-edit"></i> Editar
                                             </button>
-                                            <button type="button" class="btn bg-gradient-warning"
+                                            <button type="button" class="btn btn-sm bg-gradient-warning"
                                                     data-id="<?= $instituicaoObj->encryption($instituicao->id) ?>"
                                                     data-instituicao="<?= $instituicao->instituicao ?>"
                                                     onclick="modalAddAdm.bind(this)()">
                                                 <i class="fas fa-link"></i> Vincular Administrador
+                                            </button>
+                                            <button type="button" class="btn btn-sm bg-gradient-indigo"
+                                                    data-id="<?= $instituicaoObj->encryption($instituicao->id) ?>"
+                                                    data-instituicao="<?= $instituicao->instituicao ?>"
+                                                    onclick="modalAddTcn.bind(this)()">
+                                                <i class="fas fa-link"></i> Vincular Técnicos
                                             </button>
                                         </td>
                                     </tr>
@@ -210,6 +217,43 @@ $administradores = $administradorObj->listaAdmins();
     </div>
     <!-- /.Modal Vincular Admin -->
 
+    <div class="modal fade" id="vincular-tcn" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form class="formulario-ajax" data-form="save" action="<?= SERVERURL ?>ajax/administradorAjax.php"
+                      method="post">
+                    <input type="hidden" name="_method" id="_method" value="vinculaTcn">
+                    <div class="modal-header">
+                        <h4 class="modal-title titulo-addTcn">Vincular administrador a instituição</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Selecione um ou mais Técnicos:</label>
+                            <select class="select2bs4" name="tecnicos[]" multiple id="tecnicos">
+                                <option>Selecione...</option>
+                                <?php foreach ($tecnicos as $tecnico): ?>
+                                    <option value="<?= $tecnico->id ?>"><?= $tecnico->nome ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <input type="hidden" name="instituicao_id" id="instituicao-addTcn">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-success" id="btnSalvar">Adicionar</button>
+                    </div>
+                    <div class="resposta-ajax"></div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.Modal Vincular Admin -->
+
 <?php
 $javascript = '
 <script>
@@ -233,18 +277,31 @@ $javascript = '
         let nomeInstituicao = $(this).data("instituicao");
         let instituicao_id = $(this).data("id");
         
-        selectionar(instituicao_id);
+        selectionar("recuperaAdministrador", instituicao_id, "#admins");
                 
         titulo.text("Vincular administrador a instituição: " + nomeInstituicao);
         cpoInstituicaoId.val(instituicao_id);
         $("#vincular-adm").modal("show");
     }
     
-    function selectionar(instituicao){
+    function modalAddTcn() {
+        let titulo = $(".titulo-addTcn");
+        let cpoInstituicaoId = $("#instituicao-addTcn");
+        let instituicao_id = $(this).data("id");
+        let nomeInstituicao = $(this).data("instituicao");
+        
+        selectionar("recuperaTecnico", instituicao_id, "#tecnicos");
+                
+        titulo.text("Vincular técnico a instituição: " + nomeInstituicao);
+        cpoInstituicaoId.val(instituicao_id);
+        $("#vincular-tcn").modal("show");
+    }
+    
+    function selectionar(_method, instituicao, campo){
         
         let dados = {
-          _method: "recuperaAdministrador",
-          id: instituicao  
+          _method: _method,
+          id: instituicao
         };
         
         let  resultado = $.ajax({
@@ -254,7 +311,7 @@ $javascript = '
         })
         .done(function (resultado){
             let admins = JSON.parse(resultado);
-            let select = $("#admins");
+            let select = $(campo);
             let ids = [];
             if (admins.length > 0){
                 for (let admin of admins){

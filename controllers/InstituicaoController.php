@@ -23,6 +23,17 @@ class InstituicaoController extends MainModel
         return DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    public function recuperaTecnicosJson($idInstituicao)
+    {
+        $id = MainModel::decryption($idInstituicao);
+
+        $sql = "SELECT u.id, u.nome FROM tecnico_instituicao AS ti
+                INNER JOIN usuarios AS u ON ti.tecnico_id = u.id
+                WHERE ti.instituicao_id = {$id}";
+        $resultado = DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_OBJ);
+        return json_encode($resultado);
+    }
+
     public function recuperaAdmins($id)
     {
         $sql = "SELECT u.nome FROM administrador_instituicao AS ai

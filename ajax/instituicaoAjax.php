@@ -8,6 +8,8 @@ if (isset($_POST['_method'])) {
 
     if($_POST['_method'] == 'recuperaAdministrador') {
         echo $instituicaoObj->recuperaAdminsJson($_POST['id']);
+    } elseif($_POST['_method'] == 'recuperaTecnico') {
+        echo $instituicaoObj->recuperaTecnicosJson($_POST['id']);
     }
 } else {
     include_once "../config/destroySession.php";
