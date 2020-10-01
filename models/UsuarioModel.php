@@ -27,7 +27,7 @@ class UsuarioModel extends MainModel
     }
 
     protected function getExisteEmail($email){
-        $query = "SELECT id, email  FROM usuarios WHERE email = '$email'";
+        $query = "SELECT id, email2 FROM usuarios WHERE email2 = '$email'";
         $resultado = DbModel::consultaSimples($query);
         return $resultado;
     }
