@@ -320,7 +320,7 @@ class RecuperaSenhaController extends RecuperaSenhaModel
         if ($resultado->rowCount() == 1) {
             $email = $resultado->fetch(PDO::FETCH_COLUMN);
             $dado = array('senha' => MainModel::encryption($senha));
-            DbModel::updateEspecial('usuarios', $dado, 'email', $email);
+            DbModel::updateEspecial('usuarios', $dado, 'email2', $email);
             if (DbModel::connection()->errorCode() == 0) {
                 DbModel::deleteEspecial('resete_senhas', 'token', $token);
                 if (DbModel::connection()->errorCode() == 0) {
