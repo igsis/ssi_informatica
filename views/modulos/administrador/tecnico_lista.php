@@ -55,16 +55,33 @@ $usuarios = $usuarioObj->listaUsuarios("1,2");
                                         <td><?=$user->instituicao?></td>
                                         <td><?=$user->local?></td>
                                         <td>
-                                            <form class="form-horizontal formulario-ajax" method="POST" action="<?=SERVERURL?>ajax/usuarioAjax.php" role="form" data-form="update">
-                                                <input type="hidden" name="_method" value="editaUsuario">
-                                                <input type="hidden" name="pagina" value="administrador/tecnico_lista">
-                                                <input type="hidden" name="nivel_acesso_id" value="1">
-                                                <input type="hidden" name="id" value="<?= $user->id ?>">
-                                                <button type="submit" class="form-control btn btn-sm bg-gradient-danger">
-                                                    <i class="fas fa-trash"></i> Remover Técnico
-                                                </button>
-                                                <div class="resposta-ajax"></div>
-                                            </form>
+                                            <div class="row">
+                                                <div class="col-td">
+                                                    <form class="form-horizontal formulario-ajax" method="POST" action="<?=SERVERURL?>ajax/usuarioAjax.php" role="form" data-form="update">
+                                                        <input type="hidden" name="_method" value="editaUsuario">
+                                                        <input type="hidden" name="pagina" value="administrador/tecnico_lista">
+                                                        <input type="hidden" name="nivel_acesso_id" value="1">
+                                                        <input type="hidden" name="id" value="<?= $user->id ?>">
+                                                        <button type="submit" class="btn btn-sm bg-gradient-danger">
+                                                            <i class="fas fa-trash"></i> Remover Técnico
+                                                        </button>
+                                                        <div class="resposta-ajax"></div>
+                                                    </form>
+                                                </div>
+                                                <div class="col-md" data-toggle="tooltip" data-placement="top" title="Senha padrão: ssi2020">
+                                                    <form class="form-horizontal formulario-ajax" method="POST" action="<?=SERVERURL?>ajax/usuarioAjax.php" role="form" data-form="update">
+                                                        <input type="hidden" name="_method" value="trocaSenhaUsuario">
+                                                        <input type="hidden" name="pagina" value="administrador/tecnico_lista">
+                                                        <input type="hidden" name="id" value="<?= $user->id ?>">
+                                                        <input type="hidden" name="senha" value="ssi2020">
+                                                        <input type="hidden" name="senha2" value="ssi2020">
+                                                        <button type="submit" class="btn btn-block btn-sm bg-gradient-warning">
+                                                            <i class="fas fa-sync"></i> Senha
+                                                        </button>
+                                                        <div class="resposta-ajax"></div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
