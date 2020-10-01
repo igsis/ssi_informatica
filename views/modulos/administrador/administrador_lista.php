@@ -62,14 +62,31 @@ $admins = $administradorObj->listaAdmins();
                                             ?>
                                         </td>
                                         <td>
-                                            <form class="formulario-ajax" data-form="save" action="<?= SERVERURL ?>ajax/administradorAjax.php" method="post">
-                                                <input type="hidden" name="_method" value="removeAdmin">
-                                                <input type="hidden" name="usuario_id" value="<?= $administradorObj->encryption($admin->id) ?>">
-                                                <button type="submit" class="form-control btn btn-sm bg-gradient-danger">
-                                                    <i class="fas fa-trash"></i>  Remover Admin.
-                                                </button>
-                                                <div class="resposta-ajax"></div>
-                                            </form>
+                                            <div class="row">
+                                                <div class="col-md">
+                                                    <form class="formulario-ajax" data-form="save" action="<?= SERVERURL ?>ajax/administradorAjax.php" method="post">
+                                                        <input type="hidden" name="_method" value="removeAdmin">
+                                                        <input type="hidden" name="usuario_id" value="<?= $administradorObj->encryption($admin->id) ?>">
+                                                        <button type="submit" class="btn btn-sm bg-gradient-danger">
+                                                            <i class="fas fa-trash"></i>  Remover Admin.
+                                                        </button>
+                                                        <div class="resposta-ajax"></div>
+                                                    </form>
+                                                </div>
+                                                <div class="col-md" data-toggle="tooltip" data-placement="top" title="Senha padrão: ssi2020">
+                                                    <form class="form-horizontal formulario-ajax" method="POST" action="<?=SERVERURL?>ajax/usuarioAjax.php" role="form" data-form="update">
+                                                        <input type="hidden" name="_method" value="trocaSenhaUsuario">
+                                                        <input type="hidden" name="pagina" value="administrador/administrador_lista">
+                                                        <input type="hidden" name="id" value="<?= $admin->id ?>">
+                                                        <input type="hidden" name="senha" value="ssi2020">
+                                                        <input type="hidden" name="senha2" value="ssi2020">
+                                                        <button type="submit" class="btn btn-block btn-sm bg-gradient-warning">
+                                                            <i class="fas fa-sync"></i> Senha
+                                                        </button>
+                                                        <div class="resposta-ajax"></div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
