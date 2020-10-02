@@ -252,6 +252,18 @@ class ChamadoController extends MainModel
         return $dados;
     }
 
+    public function recuperaEstatisticaTecnico($idTecnico,$status)
+    {
+        return MainModel::consultaSimples("
+            SELECT COUNT(ch.id) as contador
+            FROM chamados ch    
+                INNER JOIN locais l on ch.local_id = l.id
+                INNER JOIN instituicoes i2 on l.instituicao_id = i2.id
+                LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
+                LEFT JOIN tecnico_instituicao ti on i2.id = ti.instituicao_id
+            WHERE status_id IN ($status) AND (ch.tecnico_id = '$idTecnico' OR (ch.tecnico_id IS NULL AND ti.tecnico_id = '$idTecnico'))")->fetchColumn();
+    }
+
     public function recuperaEstatisticaCategoria($id)
     {
         $dados = array();
