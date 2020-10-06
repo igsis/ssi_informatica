@@ -25,7 +25,7 @@ $categorias = $chamadoObj->listaCategorias();
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content-header -->
-
+<?php if ($_SESSION['nivel_acesso_s'] == 2): ?>
 <!-- Main content -->
 <div class="content">
     <div class="container-fluid">
@@ -105,3 +105,72 @@ $categorias = $chamadoObj->listaCategorias();
     <!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+<?php endif; ?>
+<?php if ($_SESSION['nivel_acesso_s'] == 3): ?>
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Horizontal Form -->
+                    <div class="card card-info">
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="small-box bg-primary">
+                                        <div class="inner">
+                                            <h3><?= $chamadoObj->recuperaEstatisticaTecnico($_SESSION['usuario_id_s'],1) ?></h3>
+                                            <p>Abertos</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fab fa-wpforms"></i>
+                                        </div>
+                                        <a href="<?= SERVERURL ?>/administrador/chamado_lista" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col">
+                                    <div class="small-box bg-primary">
+                                        <div class="inner">
+                                            <h3><?= $chamadoObj->recuperaEstatisticaTecnico($_SESSION['usuario_id_s'],2) ?></h3>
+                                            <p>Em andamento</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fab fa-wpforms"></i>
+                                        </div>
+                                        <a href="<?= SERVERURL ?>/administrador/chamado_lista" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                                <div class="col">
+                                    <div class="small-box bg-primary">
+                                        <div class="inner">
+                                            <h3><?= $chamadoObj->recuperaEstatisticaTecnico($_SESSION['usuario_id_s'],3) ?></h3>
+                                            <p>Fechados</p>
+                                        </div>
+                                        <div class="icon">
+                                            <i class="fas fa-archive"></i>
+                                        </div>
+                                        <a href="<?= SERVERURL ?>/administrador/chamado_fechado_lista" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
+                                    </div>
+                                </div>
+                                <!-- /.col -->
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+            <!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+<?php endif; ?>
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('.nav-link').removeClass('active');
+        $('#administrador_inicio').addClass('active');
+    })
+</script>

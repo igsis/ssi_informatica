@@ -123,7 +123,7 @@ class UsuarioController extends UsuarioModel
         $edita = DbModel::update('usuarios', $dados, $id);
         if ($edita) {
 
-            if ($pagina = "administrador/tecnico_lista") {
+            if ($pagina == "administrador/tecnico_lista") {
                 if ($dados['nivel_acesso_id'] == 3) {
                     if (!parent::getInstituicaoTecnico($id)) {
                         parent::insereTecnicoInstituicao($id);
@@ -235,6 +235,11 @@ class UsuarioController extends UsuarioModel
     {
         $sql = "SELECT u.*, i.instituicao, l.local FROM usuarios u INNER JOIN instituicoes i on u.instituicao_id = i.id INNER JOIN locais l on u.local_id = l.id WHERE u.publicado = 1 AND nivel_acesso_id IN ($nivel_acesso)";
         return DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function listaUsuariosApagados()
+    {
+        return DbModel::consultaSimples("SELECT u.*, i.instituicao, l.local, na.nivel_acesso FROM usuarios u INNER JOIN instituicoes i on u.instituicao_id = i.id INNER JOIN locais l on u.local_id = l.id INNER JOIN nivel_acessos na on u.nivel_acesso_id = na.id WHERE u.publicado = 0")->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function listaInstituicoesTecnicos($usuario_id)

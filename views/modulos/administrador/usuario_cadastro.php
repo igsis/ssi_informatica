@@ -98,7 +98,7 @@ if ($id){
                                 <div class="form-group col-md-3">
                                     <label for="email">E-mail Prefeitura *</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="email1"placeholder="Ex.: smcinfo" <?php if ($id) echo "value='".strstr($usuario->email1,'@',true)."'" ?> required id="email">
+                                        <input type="text" class="form-control" name="email1"placeholder="Ex.: smcinfo" <?php if ($id) echo "value='".strstr($usuario->email1,'@',true)."'" ?> pattern="[a-zA-Z0-9]+" required id="email">
                                         <div class="input-group-append">
                                             <span class="input-group-text">@prefeitura.sp.gov.br</span>
                                         </div>

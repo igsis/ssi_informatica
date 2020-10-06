@@ -66,7 +66,7 @@ $objUsuario = new UsuarioController();
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label for="email">E-mail Prefeitura *</label>
-                        <input type="text" class="form-control" name="email1" placeholder="Ex.: smcinfo" required id="email">
+                        <input type="text" class="form-control" name="email1"  pattern="[a-zA-Z0-9]+" placeholder="Ex.: smcinfo" required id="email">
                         <div class="invalid-feedback">
                             <strong>Email já cadastrado</strong>
                         </div>

@@ -58,7 +58,7 @@ $usuarios = $usuarioObj->listaUsuarios("1,2");
                                             if ($instituicoes) {
                                                 echo implode(", ", $instituicoes);
                                             } else {
-                                                echo "<a href='#' class='btn btn-sm btn-primary'><i class='fas fa-plus'></i>  Adicionar instituição</a>";
+                                                echo "<a href='instituicao_lista' class='btn btn-sm btn-primary'><i class='fas fa-plus'></i> Adicionar instituição</a>";
                                             }
                                             ?>
                                         </td>
@@ -152,3 +152,11 @@ $usuarios = $usuarioObj->listaUsuarios("1,2");
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<?php
+$javascript = <<<JAVASCRIPT
+<script>
+    $('#gerenciarSistema').addClass('menu-open');
+</script>"
+JAVASCRIPT;
+?>

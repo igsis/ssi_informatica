@@ -91,3 +91,11 @@ $locais = $localObj->listaLocais();
     </div><!-- /.container-fluid -->
 </div>
 <!-- /.content -->
+
+<?php
+$javascript = <<<JAVASCRIPT
+<script>
+    $('#gerenciarSistema').addClass('menu-open');
+</script>"
+JAVASCRIPT;
+?>
