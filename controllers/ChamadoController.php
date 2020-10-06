@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedVariableInspection */
 if ($pedidoAjax) {
     require_once "../models/MainModel.php";
     require_once "../controllers/UsuarioController.php";
@@ -153,7 +154,7 @@ class ChamadoController extends MainModel
                 INNER JOIN instituicoes i2 on l.instituicao_id = i2.id
                 LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
                 LEFT JOIN tecnico_instituicao ti on i2.id = ti.instituicao_id
-            WHERE status_id IN ($status) AND (ch.tecnico_id = '$idTecnico' OR (ch.tecnico_id IS NULL AND ti.tecnico_id = '$idTecnico'))")->fetchAll(PDO::FETCH_OBJ);
+            WHERE status_id IN ($status) AND (ch.tecnico_id IS NULL AND ti.tecnico_id = '$idTecnico')")->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function listaTecnicoUnidade()
