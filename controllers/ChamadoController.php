@@ -198,7 +198,7 @@ class ChamadoController extends MainModel
     {
         $id = MainModel::decryption($id);
         return DbModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, ut.nome as tecnico, uu.telefone, uu.email1 
+            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, uu.usuario as login, ut.nome as tecnico, uu.telefone, uu.email1 
             FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id
