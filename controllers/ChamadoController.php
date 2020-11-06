@@ -116,11 +116,12 @@ class ChamadoController extends MainModel
     public function listaChamadoAdministrador($idAdministrador,$status)
     {
         return MainModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, ut.nome as tecnico 
+            SELECT ch.*, c.categoria, l.local, i.instituicao, cs.status, uu.nome as usuario, ut.nome as tecnico 
             FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id
                 INNER JOIN chamado_status cs on ch.status_id = cs.id
+                INNER JOIN instituicoes i on l.instituicao_id = i.id
                 INNER JOIN usuarios uu on ch.usuario_id = uu.id
                 LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
             WHERE status_id IN ($status) AND ch.administrador_id = '$idAdministrador'")->fetchAll(PDO::FETCH_OBJ);
