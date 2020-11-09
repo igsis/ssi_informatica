@@ -91,6 +91,8 @@ $(function () {
         "language": {
             "url": '../views/plugins/datatables/Portuguese-Brasil.json'
         },
+        "scrollX": true,
+        "responsive": true,
     });
 });
 
