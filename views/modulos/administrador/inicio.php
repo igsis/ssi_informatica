@@ -44,7 +44,7 @@ $categorias = $chamadoObj->listaCategorias();
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body p-0">
-                                <table class="table table-striped">
+                                <table class="table table-striped table-responsive">
                                     <thead>
                                     <tr>
                                         <th>Categorias</th>
