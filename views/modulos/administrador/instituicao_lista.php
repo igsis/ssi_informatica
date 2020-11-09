@@ -257,6 +257,10 @@ $tecnicos = $administradorObj->listaUsuarios(3);
 <?php
 $javascript = '
 <script>
+    $("#gerenciarSistema").addClass("menu-open");
+</script>
+
+<script>
 
     function modalEdicao() {
         let titulo = $(".titulo-edicao");
@@ -333,13 +337,6 @@ $javascript = '
             }
         });
     }
-</script>';
-
-
-$javascript = <<<JAVASCRIPT
-<script>
-    $('#gerenciarSistema').addClass('menu-open');
-</script>"
-JAVASCRIPT;
+</script>'
 
 ?>

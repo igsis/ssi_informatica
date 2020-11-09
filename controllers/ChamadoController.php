@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUndefinedVariableInspection */
 if ($pedidoAjax) {
     require_once "../models/MainModel.php";
     require_once "../controllers/UsuarioController.php";
@@ -115,11 +116,12 @@ class ChamadoController extends MainModel
     public function listaChamadoAdministrador($idAdministrador,$status)
     {
         return MainModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, ut.nome as tecnico 
+            SELECT ch.*, c.categoria, l.local, i.instituicao, cs.status, uu.nome as usuario, ut.nome as tecnico 
             FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id
                 INNER JOIN chamado_status cs on ch.status_id = cs.id
+                INNER JOIN instituicoes i on l.instituicao_id = i.id
                 INNER JOIN usuarios uu on ch.usuario_id = uu.id
                 LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
             WHERE status_id IN ($status) AND ch.administrador_id = '$idAdministrador'")->fetchAll(PDO::FETCH_OBJ);
@@ -144,22 +146,21 @@ class ChamadoController extends MainModel
     public function listaChamadoTecnico($idTecnico,$status)
     {
         return MainModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local,i2.instituicao, cs.status, uu.nome as usuario, ut.nome as tecnico 
+            SELECT ch.*, c.categoria, l.local,ich.instituicao, cs.status, uu.nome as usuario, ut.nome as tecnico 
             FROM chamados ch    
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN usuarios uu on ch.usuario_id = uu.id
                 INNER JOIN chamado_status cs on ch.status_id = cs.id
                 INNER JOIN locais l on ch.local_id = l.id
-                INNER JOIN instituicoes i2 on l.instituicao_id = i2.id
+                INNER JOIN instituicoes ich on l.instituicao_id = ich.id
                 LEFT JOIN usuarios ut on ch.tecnico_id = ut.id
-                LEFT JOIN tecnico_instituicao ti on i2.id = ti.instituicao_id
-            WHERE status_id IN ($status) AND (ch.tecnico_id = '$idTecnico' OR (ch.tecnico_id IS NULL AND ti.tecnico_id = '$idTecnico'))")->fetchAll(PDO::FETCH_OBJ);
+                LEFT JOIN tecnico_instituicao ti on ich.id = ti.instituicao_id
+            WHERE status_id IN ($status) AND ti.tecnico_id = '$idTecnico'")->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function listaTecnicoUnidade()
+    public function listaTecnicoUnidade($unidade)
     {
-        $unidade = DbModel::consultaSimples("SELECT instituicao_id FROM usuarios WHERE id = '{$_SESSION['usuario_id_s']}'")->fetchColumn();
-        return DbModel::consultaSimples("SELECT id, nome FROM usuarios WHERE instituicao_id = '$unidade' AND nivel_acesso_id != 1")->fetchAll(PDO::FETCH_OBJ);
+        return DbModel::consultaSimples("SELECT id, nome FROM tecnico_instituicao ti INNER JOIN usuarios u on ti.tecnico_id = u.id WHERE ti.instituicao_id = '$unidade'")->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function buscaChamadoAdministrador($dados)
@@ -197,7 +198,7 @@ class ChamadoController extends MainModel
     {
         $id = MainModel::decryption($id);
         return DbModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, ut.nome as tecnico, uu.telefone, uu.email1 
+            SELECT ch.*, c.categoria, l.local, l.instituicao_id, cs.status, uu.nome as usuario, uu.usuario as login, ut.nome as tecnico, uu.telefone, uu.email1 
             FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id

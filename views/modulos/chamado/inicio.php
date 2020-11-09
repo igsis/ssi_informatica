@@ -38,7 +38,7 @@ $estatistica = $chamadoObj->recuperaEstatisticaUsuario($_SESSION['usuario_id_s']
                                     <div class="icon">
                                         <i class="fab fa-wpforms"></i>
                                     </div>
-                                    <a href="<?= SERVERURL ?>/chamado" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
+                                    <a href="<?= SERVERURL ?>chamado/chamado_lista" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                             <!-- /.col -->
@@ -51,7 +51,7 @@ $estatistica = $chamadoObj->recuperaEstatisticaUsuario($_SESSION['usuario_id_s']
                                     <div class="icon">
                                         <i class="fab fa-wpforms"></i>
                                     </div>
-                                    <a href="<?= SERVERURL ?>chamado" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
+                                    <a href="<?= SERVERURL ?>chamado/chamado_lista" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                             <!-- /.col -->
@@ -64,7 +64,7 @@ $estatistica = $chamadoObj->recuperaEstatisticaUsuario($_SESSION['usuario_id_s']
                                     <div class="icon">
                                         <i class="fas fa-archive"></i>
                                     </div>
-                                    <a href="<?= SERVERURL ?>chamado" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
+                                    <a href="<?= SERVERURL ?>chamado/chamado_lista" class="small-box-footer">Mais <i class="fas fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                             <!-- /.col -->

@@ -7,7 +7,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : null;
 
 $chamadoObj = new ChamadoController();
 $chamado = $chamadoObj->recuperaChamado($id);
-$tecnicos = $chamadoObj->listaTecnicoUnidade();
+$tecnicos = $chamadoObj->listaTecnicoUnidade($chamado->instituicao_id);
 
 $notaObj = new NotaController();
 $nota = $notaObj->listaNota($id);
@@ -71,11 +71,13 @@ if ($chamado->status_id == 3){
                         </div>
                         <div class="row">
                             <div class="col-md">
-                                <b>Contato:</b> <?= $chamado->usuario ?>
+                                <b>Contato:</b> <?= $chamado->usuario . " (" . $chamado->login . ")"?>
                             </div>
                             <div class="col-md">
                                 <b>Telefone:</b> <?= $chamado->telefone ?>
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-md">
                                 <b>Email:</b> <?= $chamado->email1 ?>
                             </div>
@@ -160,9 +162,9 @@ if ($chamado->status_id == 3){
                                         <input type="hidden" name="_method" value="editar">
                                         <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
                                         <div class="row">
-                                            <div class="col-m">
-                                                <select class="form-control" name="tecnico_id" id="tecnico_id">
-                                                    <option value="">Selecione uma opção...</option>
+                                            <div class="col-md-8">
+                                                <select class="form-control select2bs4" name="tecnico_id" id="tecnico_id">
+                                                    <option value="">Selecione...</option>
                                                     <?php foreach ($tecnicos as $tecnico): ?>
                                                         <option value="<?= $tecnico->id ?>"><?= $tecnico->nome ?></option>
                                                     <?php endforeach; ?>

@@ -24,7 +24,7 @@ else{
     $(document).ready(function () {
         setTimeout(function () {
             window.location.reload(1);
-        }, 60000); //atualiza a cada 60 segundos
+        }, 300000); //atualiza a cada 5 minutos
     });
 </script>
 
