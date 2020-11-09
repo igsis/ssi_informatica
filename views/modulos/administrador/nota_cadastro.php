@@ -7,7 +7,7 @@ $id = isset($_GET['id']) ? $_GET['id'] : null;
 
 $chamadoObj = new ChamadoController();
 $chamado = $chamadoObj->recuperaChamado($id);
-$tecnicos = $chamadoObj->listaTecnicoUnidade();
+$tecnicos = $chamadoObj->listaTecnicoUnidade($chamado->instituicao_id);
 
 $notaObj = new NotaController();
 $nota = $notaObj->listaNota($id);

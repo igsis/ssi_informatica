@@ -158,10 +158,9 @@ class ChamadoController extends MainModel
             WHERE status_id IN ($status) AND ti.tecnico_id = '$idTecnico'")->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function listaTecnicoUnidade()
+    public function listaTecnicoUnidade($unidade)
     {
-        $unidade = DbModel::consultaSimples("SELECT instituicao_id FROM usuarios WHERE id = '{$_SESSION['usuario_id_s']}'")->fetchColumn();
-        return DbModel::consultaSimples("SELECT id, nome FROM usuarios WHERE instituicao_id = '$unidade' AND nivel_acesso_id != 1")->fetchAll(PDO::FETCH_OBJ);
+        return DbModel::consultaSimples("SELECT id, nome FROM tecnico_instituicao ti INNER JOIN usuarios u on ti.tecnico_id = u.id WHERE ti.instituicao_id = '$unidade'")->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function buscaChamadoAdministrador($dados)
@@ -199,7 +198,7 @@ class ChamadoController extends MainModel
     {
         $id = MainModel::decryption($id);
         return DbModel::consultaSimples("
-            SELECT ch.*, c.categoria, l.local, cs.status, uu.nome as usuario, uu.usuario as login, ut.nome as tecnico, uu.telefone, uu.email1 
+            SELECT ch.*, c.categoria, l.local, l.instituicao_id, cs.status, uu.nome as usuario, uu.usuario as login, ut.nome as tecnico, uu.telefone, uu.email1 
             FROM chamados ch 
                 INNER JOIN categorias c on ch.categoria_id = c.id
                 INNER JOIN locais l on ch.local_id = l.id
