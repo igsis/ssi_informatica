@@ -93,6 +93,7 @@ $(function () {
         },
         "scrollX": true,
         "responsive": true,
+        "aLengthMenu": [ 25, 50, 100 ],
     });
 });
 
