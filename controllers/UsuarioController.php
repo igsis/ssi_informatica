@@ -190,6 +190,11 @@ class UsuarioController extends UsuarioModel
         }
         else{
             $pagina = $_POST['pagina'];
+            if ($pagina == "administrador/usuario_lista") {
+                $msg = "Senha do usuário alterada para <strong>ssi2020</strong>";
+            } else {
+                $msg = "Senha alterada com sucesso!";
+            }
             unset($dados['pagina']);
             unset($dados['_method']);
             unset($dados['id']);
@@ -201,7 +206,7 @@ class UsuarioController extends UsuarioModel
                 $alerta = [
                     'alerta' => 'sucesso',
                     'titulo' => 'Usuário',
-                    'texto' => 'Senha alterada com sucesso!',
+                    'texto' => $msg,
                     'tipo' => 'success',
                     'location' => SERVERURL.$pagina
                 ];
