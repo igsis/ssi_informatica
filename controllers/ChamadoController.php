@@ -80,6 +80,12 @@ class ChamadoController extends MainModel
             $dados[$campo] = MainModel::limparString($post);
         }
 
+        foreach ($dados as $key => $valor) {
+            if ($valor == "NULL") {
+                $dados[$key] = null;
+            }
+        }
+
         $edita = DbModel::update('chamados', $dados, $idDecryp);
         if ($edita->rowCount() >= 1 || DbModel::connection()->errorCode() == 0) {
             $alerta = [
