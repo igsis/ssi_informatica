@@ -29,6 +29,10 @@ if ($id){
         <div class="row">
             <div class="col-md-12">
                 <!-- Horizontal Form -->
+                <div class="alert alert-warning">
+                    <h5><i class="icon fas fa-exclamation-triangle"></i> Atenção!</h5>
+                    A senha do usuário será <strong>ssi2020</strong>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Usuários</h3>
