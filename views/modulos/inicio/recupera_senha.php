@@ -8,7 +8,11 @@
             </a>
         </div>
         <div class="card-body register-card-body">
-            <p class="card-text"><span style="text-align: justify; display:block;"> Para recuperar senha digite o e-mail usado no cadastro.</span></p>
+            <p class="card-text"><span style="text-align: justify; display:block;"> Para recuperar senha digite o e-mail secundário usado no cadastro.</span></p>
+            <div class="alert alert-warning ">
+                <h5><i class="icon fas fa-exclamation-triangle"></i> Atenção!</h5>
+                Não pode ser o e-mail institucional (email@prefeitura.sp.gov.br)
+            </div>
             <p><?= isset($message) ? $message : '' ?></p>
             <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/recuperaSenhaAjax.php" role="form"
                   data-form="recover">
