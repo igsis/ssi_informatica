@@ -17,6 +17,7 @@ class ArquivoController extends ArquivoModel
     public function enviarArquivo($chamado_id, $pagina) {
         unset($_POST['pagina']);
         $chamado_id = MainModel::decryption($chamado_id);
+
         foreach ($_FILES as $file) {
             $numArquivos = count($file['error']);
             foreach ($file as $key => $dados) {
@@ -25,7 +26,7 @@ class ArquivoController extends ArquivoModel
                 }
             }
         }
-        $erros = ArquivoModel::enviaArquivos($arquivos, $chamado_id,5, false);
+        $erros = ArquivoModel::enviaArquivos($arquivos, $chamado_id,5, true);
         $erro = MainModel::in_array_r(true, $erros, true);
 
         if ($erro) {

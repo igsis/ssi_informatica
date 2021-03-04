@@ -24,8 +24,9 @@ class ArquivoModel extends MainModel
                 $arquivoTemp = $arquivo['tmp_name'];
                 $explode = explode('.', $nomeArquivo);
                 $extensao = strtolower(end($explode));
+                $allowedExts = array("doc", "docx", "pdf", "jpg", "jpeg", "png", "pdf"); //Extensões permitidas
 
-                if ($validaPDF && $extensao != 'pdf') {
+                if ($validaPDF && !in_array($extensao, $allowedExts) ) {
                     $erros[$key]['bol'] = true;
                     $erros[$key]['motivo'] = "Arquivo em formato não aceito";
                     $erros[$key]['arquivo'] = $nomeArquivo;
