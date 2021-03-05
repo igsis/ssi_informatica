@@ -56,6 +56,8 @@ elseif ($view == 'recupera_senha'):
     require_once "./views/modulos/inicio/recupera_senha.php";
 elseif($view == 'resete_senha'):
     require_once "./views/modulos/inicio/resete_senha.php";
+elseif($view == 'ativar_conta'):
+    require_once "./views/modulos/inicio/ativar_conta.php";
 else:
     require_once "./controllers/UsuarioController.php";
     $usuario = new UsuarioController();
