@@ -11,14 +11,20 @@
             <p><?= isset($message) ? $message : '' ?></p>
             <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/usuarioAjax.php" role="form"
                   data-form="recover">
-                
+                <input type="hidden" name="_method" value="confirm">
+                <input type="hidden" name="token" value="<?= $_GET['tk'] ?>">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p>Obrigado pela confirmação!</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button class="btn btn-success">Confirmar cadastro</button>
+                    </div>
+                </div>
                 <div class="resposta-ajax"></div>
             </form>
-            <div class="mb-0 text-left">
-                <p class="mb-1">
-                    <a href="<?= SERVERURL ?>">Voltar a Tela de Login</a>
-                </p>
-            </div>
         </div>
         <div class="card-footer bg-light-gradient text-center">
             <img src="<?= SERVERURL ?>views/dist/img/CULTURA_HORIZONTAL_pb_positivo.png" alt="logo cultura">

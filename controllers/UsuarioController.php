@@ -104,19 +104,17 @@ class UsuarioController extends UsuarioModel
             ];
         }
 
-        if ($emailControll->validarEmail($dados['email1'])) {
-            if (!$erro) {
-                $dados['senha'] = MainModel::encryption($dados['senha']);
-                $insere = DbModel::insert('usuarios', $dados);
-                if ($insere) {
-                    $alerta = [
-                        'alerta' => 'sucesso',
-                        'titulo' => 'Usuário Cadastrado!',
-                        'texto' => "Para finalizar seu cadastro acesse o email {$dados['email1']} para que tenhamos certeza que você é um funcionario!",
-                        'tipo' => 'success',
-                        'location' => $pagina
-                    ];
-                }
+        if ($emailControll->validarEmail($dados['email1']) && !$erro) {
+            $dados['senha'] = MainModel::encryption($dados['senha']);
+            $insere = DbModel::insert('usuarios', $dados);
+            if ($insere) {
+                $alerta = [
+                    'alerta' => 'sucesso',
+                    'titulo' => 'Usuário Cadastrado!',
+                    'texto' => "Para finalizar seu cadastro acesse o email {$dados['email1']} para que tenhamos certeza que você é um funcionario!",
+                    'tipo' => 'success',
+                    'location' => $pagina
+                ];
             }
         }
         return MainModel::sweetAlert($alerta);
@@ -271,5 +269,33 @@ class UsuarioController extends UsuarioModel
                 INNER JOIN instituicoes AS i ON ti.instituicao_id = i.id
                 WHERE ti.tecnico_id = '$usuario_id'";
         return DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function confirmarUsuario($token)
+    {
+        $email = MainModel::decryption($token);
+
+        $alert = [
+        'alerta' => 'simples',
+        'titulo' => 'Erro!',
+        'texto' => 'Erro ao tentar finalizar cadastro',
+        'tipo' => 'error'
+        ];
+        try {
+            $usuario = DbModel::getInfoEspecial('usuarios', 'email1', $email)->fetch(PDO::FETCH_ASSOC);
+            if ($usuario) {
+                $usuario['publicado'] = 1;
+                $update = DbModel::update('usuarios', $usuario, $usuario['id']);
+                if ($update){
+                    return "<script>window.location.href = '" . SERVERURL . "'</script>";
+                }
+
+                return MainModel::sweetAlert($alert);
+            }
+        } catch (Exception $ex){
+            MainModel::gravarLog("Erro ao Ativar Usuario\nErro: {$ex}");
+            return MainModel::sweetAlert($alert);
+        }
+        return MainModel::sweetAlert($alert);
     }
 }

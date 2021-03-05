@@ -66,7 +66,7 @@ class EmailController extends RecuperaSenhaModel
 
     public function validarEmail($email)
     {
-        $token = $this->gerarToken();
+        $token = MainModel::encryption($email);
 
         return $this->enviarEmail($email, $token,false);
 
@@ -383,7 +383,7 @@ class EmailController extends RecuperaSenhaModel
                                             <tr>
                                               <td align='center' style='font-size:0px;padding:10px 25px;word-break:break-word;'>
                                                 <div style='color:#4d4d4d;font-family:Oxygen, Helvetica neue, sans-serif;font-size:32px;font-weight:700;line-height:37px;text-align:center;'>
-            Bem vindo
+            Bem-vindo(a)
         </div>
                                               </td>
                                             </tr>

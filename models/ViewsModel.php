@@ -46,6 +46,7 @@ class ViewsModel
             'logout',
             'recupera_senha',
             'resete_senha',
+            'ativar_conta',
             'chamado_cadastro',
             'nota_cadastro',
             'chamado_lista',
@@ -90,6 +91,8 @@ class ViewsModel
             $conteudo = "recupera_senha";
         } elseif ($modulo == "resete_senha") {
             $conteudo = "resete_senha";
+        } elseif ($modulo == "ativar_conta") {
+            $conteudo = "ativar_conta";
         }
         else {
             $conteudo = "login";

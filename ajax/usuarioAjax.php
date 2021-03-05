@@ -19,6 +19,8 @@ if (isset($_POST['_method'])) {
     }
     elseif ($_POST['_method'] == "apagaUsuario"){
         echo $insUsuario->apagaUsuario();
+    } elseif ($_POST['_method'] == "confirm"){
+       echo $insUsuario->confirmarUsuario($_POST['token']);
     }
 } else {
     include_once "../config/destroySession.php";
