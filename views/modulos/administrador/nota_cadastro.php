@@ -296,7 +296,7 @@ if ($chamado->status_id == 3){
             <form class="formulario-ajax" action="<?= SERVERURL ?>ajax/chamadoAjax.php" method="post">
                 <input type="hidden" name="_method" value="editar">
                 <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
-                <input type="hidden" name="data_encerramento" value="<?= date('Y-m-d H:-i:s') ?>">
+                <input type="hidden" name="data_encerramento" value="<?= date('Y-m-d H:i:s') ?>">
                 <input type="hidden" name="status_id" value="3">
                 <div class="modal-body">
                     <p>Para encerrar um chamado é necessário inserir a solução.</p>
