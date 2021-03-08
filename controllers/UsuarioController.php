@@ -2,15 +2,20 @@
 
 if ($pedidoAjax) {
     require_once "../models/UsuarioModel.php";
+    require_once "../controllers/EmailController.php";
+
+
 } else {
     require_once "./models/UsuarioModel.php";
+    require_once "./controllers/EmailController.php";
 }
 
 
 class UsuarioController extends UsuarioModel
 {
 
-    public function iniciaSessao($modulo = false, $edital = null) {
+    public function iniciaSessao($modulo = false, $edital = null)
+    {
         $email = MainModel::limparString($_POST['usuario']);
         $senha = MainModel::limparString($_POST['senha']);
         $senha = MainModel::encryption($senha);
@@ -50,18 +55,25 @@ class UsuarioController extends UsuarioModel
         return MainModel::sweetAlert($alerta);
     }
 
-    public function forcarFimSessao() {
+    public function forcarFimSessao()
+    {
         session_destroy();
-        return header("Location: ".SERVERURL);
+        return header("Location: " . SERVERURL);
     }
 
-    public function insereUsuario() {
+    public function insereUsuario()
+    {
+        $emailControll = new EmailController();
+
         $erro = false;
         $dados = [];
-        $pagina = isset($_POST['pagina']) ? SERVERURL.$_POST['pagina'] : SERVERURL;
+        $pagina = isset($_POST['pagina']) ? SERVERURL . $_POST['pagina'] : SERVERURL;
 
-        $dados['email1'] = $_POST['email1']."@prefeitura.sp.gov.br";
-        $camposIgnorados = ["_method", "pagina", "senha2", "jovem_monitor", "rf_rg", "email1"];
+        $dados['email1'] = $_POST['email1'] . "@prefeitura.sp.gov.br";
+        $dados['publicado'] = 0;
+
+
+        $camposIgnorados = ["_method", "pagina", "senha2", "jovem_monitor", "rf_rg", "email1", "publicado"];
         foreach ($_POST as $campo => $post) {
             if (!in_array($campo, $camposIgnorados)) {
                 $dados[$campo] = MainModel::limparString($post);
@@ -79,6 +91,7 @@ class UsuarioController extends UsuarioModel
             ];
         }
 
+
         // Valida email unique
         $consultaEmail = DbModel::consultaSimples("SELECT email1 FROM usuarios WHERE email1 = '{$dados['email1']}'");
         if ($consultaEmail->rowCount() >= 1) {
@@ -91,14 +104,14 @@ class UsuarioController extends UsuarioModel
             ];
         }
 
-        if (!$erro) {
+        if ($emailControll->validarEmail($dados['email1']) && !$erro) {
             $dados['senha'] = MainModel::encryption($dados['senha']);
             $insere = DbModel::insert('usuarios', $dados);
             if ($insere) {
                 $alerta = [
                     'alerta' => 'sucesso',
                     'titulo' => 'Usuário Cadastrado!',
-                    'texto' => "Usuário cadastrado com Sucesso! Seu usuário é <b>{$dados['usuario']}</b>",
+                    'texto' => "Para finalizar seu cadastro acesse o email {$dados['email1']} para que tenhamos certeza que você é um funcionario!",
                     'tipo' => 'success',
                     'location' => $pagina
                 ];
@@ -106,15 +119,16 @@ class UsuarioController extends UsuarioModel
         }
         return MainModel::sweetAlert($alerta);
     }
-    
-    public function editaUsuario($dados, $id){
+
+    public function editaUsuario($dados, $id)
+    {
         $camposIgnorados = ["_method", "pagina", "jovem_monitor", "rf_rg", "id"];
         foreach ($camposIgnorados as $campo) {
             unset($dados[$campo]);
         }
 
-        $pagina =  $_POST['pagina'];
-        if ($pagina == "administrador/usuario_lista"){
+        $pagina = $_POST['pagina'];
+        if ($pagina == "administrador/usuario_lista") {
             $id = MainModel::decryption($id);
             $dados['email1'] = "{$dados['email1']}@prefeitura.sp.gov.br";
         }
@@ -128,7 +142,7 @@ class UsuarioController extends UsuarioModel
                     if (!parent::getInstituicaoTecnico($id)) {
                         parent::insereTecnicoInstituicao($id);
                     }
-                } elseif ($dados['nivel_acesso_id'] == 1){
+                } elseif ($dados['nivel_acesso_id'] == 1) {
                     if (parent::getInstituicaoTecnico($id)) {
                         DbModel::deleteEspecial('tecnico_instituicao', 'tecnico_id', $id);
                     }
@@ -140,7 +154,7 @@ class UsuarioController extends UsuarioModel
                 'titulo' => 'Usuário',
                 'texto' => 'Informações alteradas com sucesso!',
                 'tipo' => 'success',
-                'location' => SERVERURL. $pagina.'&id='.MainModel::encryption($id)
+                'location' => SERVERURL . $pagina . '&id=' . MainModel::encryption($id)
             ];
         } else {
             $alerta = [
@@ -148,7 +162,7 @@ class UsuarioController extends UsuarioModel
                 'titulo' => 'Erro!',
                 'texto' => 'Erro ao salvar!',
                 'tipo' => 'error',
-                'location' => SERVERURL.$pagina.'&id='.MainModel::encryption($id)
+                'location' => SERVERURL . $pagina . '&id=' . MainModel::encryption($id)
             ];
         }
         return MainModel::sweetAlert($alerta);
@@ -156,15 +170,15 @@ class UsuarioController extends UsuarioModel
 
     public function apagaUsuario()
     {
-        $pagina =  $_POST['pagina'];
-        $apaga = DbModel::apaga("usuarios",$_POST['id']);
+        $pagina = $_POST['pagina'];
+        $apaga = DbModel::apaga("usuarios", $_POST['id']);
         if ($apaga) {
             $alerta = [
                 'alerta' => 'sucesso',
                 'titulo' => 'Usuário',
                 'texto' => 'Usuário removido com sucesso!',
                 'tipo' => 'success',
-                'location' => SERVERURL. $pagina
+                'location' => SERVERURL . $pagina
             ];
         } else {
             $alerta = [
@@ -172,13 +186,14 @@ class UsuarioController extends UsuarioModel
                 'titulo' => 'Erro!',
                 'texto' => 'Erro ao remover usuário. Tente novamente!',
                 'tipo' => 'error',
-                'location' => SERVERURL.$pagina
+                'location' => SERVERURL . $pagina
             ];
         }
         return MainModel::sweetAlert($alerta);
     }
 
-    public function trocaSenha($dados,$id){
+    public function trocaSenha($dados, $id)
+    {
         // Valida Senha
         if ($_POST['senha'] != $_POST['senha2']) {
             $alerta = [
@@ -187,8 +202,7 @@ class UsuarioController extends UsuarioModel
                 'texto' => "As senhas inseridas não conferem. Tente novamente",
                 'tipo' => "error"
             ];
-        }
-        else{
+        } else {
             $pagina = $_POST['pagina'];
             if ($pagina == "administrador/usuario_lista") {
                 $msg = "Senha do usuário alterada para <strong>ssi2020</strong>";
@@ -208,31 +222,32 @@ class UsuarioController extends UsuarioModel
                     'titulo' => 'Usuário',
                     'texto' => $msg,
                     'tipo' => 'success',
-                    'location' => SERVERURL.$pagina
+                    'location' => SERVERURL . $pagina
                 ];
-            }
-            else{
+            } else {
                 $alerta = [
                     'alerta' => 'simples',
                     'titulo' => 'Erro!',
                     'texto' => 'Erro ao salvar!',
                     'tipo' => 'error',
-                    'location' => SERVERURL.$pagina
+                    'location' => SERVERURL . $pagina
                 ];
             }
         }
         return MainModel::sweetAlert($alerta);
     }
 
-    public function recuperaUsuario($id) {
+    public function recuperaUsuario($id)
+    {
         $tipo = strlen($id);
-        if ($tipo > 10){
+        if ($tipo > 10) {
             $id = MainModel::decryption($id);
         }
-        return DbModel::getInfo('usuarios',$id);
+        return DbModel::getInfo('usuarios', $id);
     }
 
-    public function recuperaEmail($email){
+    public function recuperaEmail($email)
+    {
         return UsuarioModel::getExisteEmail($email);
     }
 
@@ -254,5 +269,33 @@ class UsuarioController extends UsuarioModel
                 INNER JOIN instituicoes AS i ON ti.instituicao_id = i.id
                 WHERE ti.tecnico_id = '$usuario_id'";
         return DbModel::consultaSimples($sql)->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function confirmarUsuario($token)
+    {
+        $email = MainModel::decryption($token);
+
+        $alert = [
+        'alerta' => 'simples',
+        'titulo' => 'Erro!',
+        'texto' => 'Erro ao tentar finalizar cadastro',
+        'tipo' => 'error'
+        ];
+        try {
+            $usuario = DbModel::getInfoEspecial('usuarios', 'email1', $email)->fetch(PDO::FETCH_ASSOC);
+            if ($usuario) {
+                $usuario['publicado'] = 1;
+                $update = DbModel::update('usuarios', $usuario, $usuario['id']);
+                if ($update){
+                    return "<script>window.location.href = '" . SERVERURL . "'</script>";
+                }
+
+                return MainModel::sweetAlert($alert);
+            }
+        } catch (Exception $ex){
+            MainModel::gravarLog("Erro ao Ativar Usuario\nErro: {$ex}");
+            return MainModel::sweetAlert($alert);
+        }
+        return MainModel::sweetAlert($alert);
     }
 }
