@@ -23,29 +23,21 @@ class ChamadoController extends MainModel
             $dados['local_id'] = $usuario->local_id;
         }
         /*
-         *  vendo qual técnico tem menos chamados
+         *  vendo qual técnico tem menos chamados caso o chamado venha do gabinete
          */
         if ($_POST['administrador_id'] == 2){
-            $tecnicos = DbModel::consultaSimples("
-                SELECT u.id, COUNT(u.id) as contador
-                FROM chamados c
-                INNER JOIN usuarios u on c.tecnico_id = u.id
-                WHERE u.instituicao_id = 1 and u.nivel_acesso_id = 3 AND u.id NOT IN (4,231) AND c.status_id != 3
-                group by u.id")->fetchAll(PDO::FETCH_ASSOC);
-            
-            $teste = min(array_keys($tecnicos));
-            $tec = $tecnicos[0]['id'];
-            echo $teste;
-            echo $tec;
-            //$dados['tecnico_id'] = min(array_keys($tecnicos));
-
+            $tecnico_id = MainModel::chamadosPorTecnico();
+            if ($tecnico_id) {
+                $dados['tecnico_id'] = $tecnico_id;
+            }
         }
+
+        /* ./limpeza */
         unset($_POST['_method']);
         unset($_POST['pagina']);
         foreach ($_POST as $campo => $post) {
             $dados[$campo] = MainModel::limparString($post);
         }
-        /* ./limpeza */
 
         /* cadastro */
         $insere = DbModel::insert('chamados', $dados);
