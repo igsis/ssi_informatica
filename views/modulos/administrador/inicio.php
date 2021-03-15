@@ -86,10 +86,10 @@ $categorias = $chamadoObj->listaCategorias();
                                     foreach ($relatorio as $rel) {
                                         ?>
                                         <li class="nav-item">
-                                            <a href="#" class="nav-link">
+                                            <span class="nav-link">
                                                 <?= $rel->status ?> <span
                                                         class="float-right badge bg-primary"><?= $rel->quantidade ?></span>
-                                            </a>
+                                            </span>
                                         </li>
                                         <?php
                                     }
