@@ -514,7 +514,7 @@ class MainModel extends DbModel
                 SELECT u.id, COUNT(u.id) as contador
                 FROM chamados c
                 INNER JOIN usuarios u on c.tecnico_id = u.id
-                WHERE u.instituicao_id = 1 and u.nivel_acesso_id = 3 AND u.id NOT IN (4,231) AND c.status_id != 3
+                WHERE u.instituicao_id = 1 and u.nivel_acesso_id = 3 AND u.id NOT IN (4,8,231) AND c.status_id != 3
                 group by u.id")->fetchAll(PDO::FETCH_ASSOC);
 
         if (count($tecnicos)) {
