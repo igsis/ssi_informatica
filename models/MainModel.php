@@ -525,10 +525,23 @@ class MainModel extends DbModel
                 if ($tecnico['contador'] < $chamados) {
                     $chamados = $tecnico['contador'];
                     $tecnico_id = $tecnico['id'];
+                    $empate = false;
+                } elseif ($tecnico['contador'] == $chamados) {
+                    if (!$empate) {
+                        $empate = true;
+                        unset($tecnicosEmpatados);
+                        $tecnicosEmpatados[] = $tecnico_id;
+                    }
+                    $tecnicosEmpatados[] = $tecnico['id'];
                 }
             }
 
-            return $tecnico_id;
+            if (isset($tecnicosEmpatados)) {
+                $sorteado = array_rand($tecnicosEmpatados, 1);
+                return $tecnicosEmpatados[$sorteado];
+            } else {
+                return $tecnico_id;
+            }
         } else {
             return false;
         }
