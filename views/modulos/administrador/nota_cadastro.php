@@ -151,7 +151,7 @@ if ($chamado->status_id == 3){
                     </div>
                 </div>
 
-                <?php if ($chamado->status_id == 2): ?>
+                <?php if ($chamado->status_id != 3): ?>
                     <div class="row">
                         <div class="col-md">
                             <div class="card card-outline card-primary">
