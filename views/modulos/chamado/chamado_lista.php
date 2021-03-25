@@ -69,9 +69,18 @@ else{
                                 <td><?= $chamados->tecnico ?? "não possui" ?></td>
                                 <td><?= $chamados->status ?></td>
                                 <td>
-                                    <a href="nota_cadastro&id=<?= MainModel::encryption($chamados->id) ?>" class="btn btn-sm bg-primary">
-                                        <i class="fas fa-folder-open"></i> Carregar
-                                    </a>
+                                    <div class="row">
+                                        <div class="col">
+                                            <a href="nota_cadastro&id=<?= MainModel::encryption($chamados->id) ?>" class="btn btn-sm bg-primary">
+                                                <i class="fas fa-folder-open"></i> Carregar
+                                            </a>
+                                        </div>
+                                        <?php if ($chamados->status == "Fechado"){ ?>
+                                            <div class="col">
+                                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdXoeb9tgc2R7C1QSq0QIA1qFsm1XYTAVAPP_EYeJ74gKU3yA/viewform?usp=pp_url&entry.1872662039=<?= $chamados->id ?>&entry.1075408560=<?=$_SESSION['nome_s']?>&entry.683680955=<?=$chamados->local?>&entry.1854038216=<?=$_SESSION['login_s']?>" class="btn btn-sm bg-secondary" target="_blank"><i class="fas fa-info-circle"></i> Pesquisa de opinião</a>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
