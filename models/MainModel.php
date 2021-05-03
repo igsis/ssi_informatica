@@ -508,13 +508,14 @@ class MainModel extends DbModel
     /**
      * <p>Função que retorna o ID do técnico com menos chamados</p>
      * @return false|integer
+     * <p>Técnicos: 4 - Larissa, 8 - Maurício, 10 - Victor, 29 - Adilson, 40 - Gustavo, 42 - Wesley, 231 - Gabriel (estagiário)</p>
      */
     protected function chamadosPorTecnico() {
         $tecnicos = DbModel::consultaSimples("
                 SELECT u.id, COUNT(u.id) as contador
                 FROM chamados c
                 INNER JOIN usuarios u on c.tecnico_id = u.id
-                WHERE u.instituicao_id = 1 and u.nivel_acesso_id = 3 AND u.id NOT IN (4,8,231) AND c.status_id != 3
+                WHERE u.instituicao_id = 1 and u.nivel_acesso_id = 3 AND u.id NOT IN (4,231) AND c.status_id != 3
                 group by u.id")->fetchAll(PDO::FETCH_ASSOC);
 
         if (count($tecnicos)) {
