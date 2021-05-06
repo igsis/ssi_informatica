@@ -505,11 +505,11 @@ class MainModel extends DbModel
         }
     }
 
-    /**
+    /*
      * <p>Função que retorna o ID do técnico com menos chamados</p>
      * @return false|integer
      * <p>Técnicos: 4 - Larissa, 8 - Maurício, 10 - Victor, 29 - Adilson, 40 - Gustavo, 42 - Wesley, 231 - Gabriel (estagiário)</p>
-     */
+
     protected function chamadosPorTecnico() {
         $tecnicos = DbModel::consultaSimples("
                 SELECT u.id, COUNT(u.id) as contador
@@ -547,4 +547,42 @@ class MainModel extends DbModel
             return false;
         }
     }
+     * */
+
+    /**
+     * <p>Função para distribuir um chamado por técnico</p>
+     * @return false|mixed
+     * <p>Técnicos: 4 - Larissa, 8 - Maurício, 10 - Victor, 29 - Adilson, 40 - Gustavo, 42 - Wesley, 231 - Gabriel (estagiário)</p>
+     */
+    protected function chamadosPorTecnico()
+    {
+        $tecnicosExcluidos = "4,231";
+        $listaTecnicos = DbModel::consultaSimples("
+            SELECT u.id FROM usuarios u WHERE u.instituicao_id = 1 and u.nivel_acesso_id = 3 AND u.id NOT IN ($tecnicosExcluidos)
+        ")->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($listaTecnicos as $tecnico) {
+            $tecnicos[] = $tecnico['id'];
+        }
+
+        $ultimoChamado = DbModel::consultaSimples("SELECT tecnico_id FROM chamados c 
+            INNER JOIN locais l on c.local_id = l.id
+            INNER JOIN instituicoes i on l.instituicao_id = i.id
+            WHERE status_id != 3 AND l.instituicao_id = 1 AND tecnico_id NOT IN ($tecnicosExcluidos) ORDER BY c.id DESC LIMIT 0,1
+        ")->fetchColumn();
+
+        if (in_array($ultimoChamado, $tecnicos)) {
+            while (current($tecnicos) != $ultimoChamado) {
+                next($tecnicos);
+            }
+
+            next($tecnicos);
+            $tecnico_id = current($tecnicos);
+            return $tecnico_id;
+        } else {
+            $tecnico_id = current($tecnicos);
+            return $tecnico_id;
+        }
+    }
+    
 }
