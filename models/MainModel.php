@@ -26,6 +26,8 @@ class MainModel extends DbModel
         return false;
     }
 
+
+
     /**
      * <p>Encripta a mensagem usando o "openssl_encrypt"</p>
      * @param string $string
@@ -551,7 +553,7 @@ class MainModel extends DbModel
 
     /**
      * <p>Função para distribuir um chamado por técnico</p>
-     * @return false|mixed
+     * @return false|int
      * <p>Técnicos: 4 - Larissa, 8 - Maurício, 10 - Victor, 29 - Adilson, 40 - Gustavo, 42 - Wesley, 231 - Gabriel (estagiário)</p>
      */
     protected function chamadosPorTecnico()
@@ -576,12 +578,16 @@ class MainModel extends DbModel
                 next($tecnicos);
             }
 
-            next($tecnicos);
-            $tecnico_id = current($tecnicos);
-            return $tecnico_id;
+            $tecnico_id = next($tecnicos);
+
+            if ($tecnico_id) {
+                return $tecnico_id;
+            } else {
+                reset($tecnicos);
+                return current($tecnicos);
+            }
         } else {
-            $tecnico_id = current($tecnicos);
-            return $tecnico_id;
+            return current($tecnicos);
         }
     }
     
