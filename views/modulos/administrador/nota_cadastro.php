@@ -55,6 +55,9 @@ if ($chamado->status_id == 3){
                                 <b>Data abertura:</b> <?= date('d/m/Y', strtotime($chamado->data_abertura)) ?>
                             </div>
                             <div class="col-md">
+                                <?= $chamado->data_progresso ? "<b>Data andamento:</b> ".date('d/m/Y', strtotime($chamado->data_progresso)) : null ?>
+                            </div>
+                            <div class="col-md">
                                 <?= $chamado->data_encerramento ? "<b>Data fechamento:</b> ".date('d/m/Y', strtotime($chamado->data_encerramento)) : null ?>
                             </div>
                         </div>
@@ -109,30 +112,39 @@ if ($chamado->status_id == 3){
                             <!-- form start -->
                             <div class="card-body">
                                 <div class="row">
-                                    <?php if ($chamado->status_id != 3): ?>
-                                        <?php if ($chamado->status_id == 1): ?>
-                                            <div class="col-md">
-                                                <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/chamadoAjax.php" role="form" data-form="update">
-                                                    <input type="hidden" name="_method" value="editar">
-                                                    <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
-                                                    <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
-                                                    <input type="hidden" name="status_id" value="2">
-                                                    <input type="hidden" name="tecnico_id" value="<?= $_SESSION['usuario_id_s'] ?>">
-                                                    <button type="submit" class="btn btn-primary btn-sm btn-block">Em andamento</button>
-                                                    <div class="resposta-ajax"></div>
-                                                </form>
-                                            </div>
-                                        <?php else: ?>
-                                            <div class="col-md">
-                                                <button class="btn btn-outline-primary btn-sm btn-block" disabled>Andamento em <?= date("d/m/Y", strtotime($chamado->data_progresso)) ?></button>
-                                            </div>
-                                        <?php endif;?>
+                                    <?php if ($chamado->status_id == 1): ?>
+                                    <div class="col-md">
+                                        <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/chamadoAjax.php" role="form" data-form="update">
+                                            <input type="hidden" name="_method" value="editar">
+                                            <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
+                                            <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
+                                            <select class="form-control" name="status_id">
+                                                <option value="2">Em andamento</option>
+                                                <option value="4">Aguardando terceirizada</option>
+                                            </select>
+                                            <button type="submit" class="btn btn-primary btn-sm btn-block">Gravar</button>
+                                            <div class="resposta-ajax"></div>
+                                        </form>
+                                    </div>
+                                    <?php elseif ($chamado->status_id == 2): ?>
+                                        <div class="col-md">
+                                            <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/chamadoAjax.php" role="form" data-form="update">
+                                                <input type="hidden" name="_method" value="editar">
+                                                <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
+                                                <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
+                                                <input type="hidden" name="status_id" value="4">
+                                                <input type="hidden" name="tecnico_id" value="<?= $_SESSION['usuario_id_s'] ?>">
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block">Aguardando terceirizada</button>
+                                                <div class="resposta-ajax"></div>
+                                            </form>
+                                        </div>
                                         <div class="col-md">
                                             <button class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#alterarStatus">
                                                 Fechado
                                             </button>
                                         </div>
-                                    <?php else: ?>
+                                    <?php endif; ?>
+                                    <?php if ($chamado->status_id == 3): ?>
                                         <div class="col-md">
                                             <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/chamadoAjax.php" role="form" data-form="update">
                                                 <input type="hidden" name="_method" value="editar">
@@ -144,8 +156,26 @@ if ($chamado->status_id == 3){
                                             </form>
                                         </div>
                                     <?php endif; ?>
-                                    <!-- /.col -->
+                                    <?php if ($chamado->status_id == 4): ?>
+                                        <div class="col-md">
+                                            <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/chamadoAjax.php" role="form" data-form="update">
+                                                <input type="hidden" name="_method" value="editar">
+                                                <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
+                                                <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
+                                                <input type="hidden" name="status_id" value="2">
+                                                <input type="hidden" name="tecnico_id" value="<?= $_SESSION['usuario_id_s'] ?>">
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block">Em andamento</button>
+                                                <div class="resposta-ajax"></div>
+                                            </form>
+                                        </div>
+                                        <div class="col-md">
+                                            <button class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#alterarStatus">
+                                                Fechado
+                                            </button>
+                                        </div>
+                                    <?php endif;?>
                                 </div>
+                                <!-- /.row -->
                             </div>
                         </div>
                     </div>
