@@ -118,9 +118,11 @@ if ($chamado->status_id == 3){
                                             <input type="hidden" name="_method" value="editar">
                                             <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
                                             <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
-                                            <select class="form-control" name="status_id">
+                                            <select class="form-control" name="status_id" required>
+                                                <option value="">Selecione...</option>
                                                 <option value="2">Em andamento</option>
                                                 <option value="4">Aguardando terceirizada</option>
+                                                <option value="5">Aguardando usuário</option>
                                             </select>
                                             <button type="submit" class="btn btn-primary btn-sm btn-block">Gravar</button>
                                             <div class="resposta-ajax"></div>
@@ -132,9 +134,12 @@ if ($chamado->status_id == 3){
                                                 <input type="hidden" name="_method" value="editar">
                                                 <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
                                                 <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
-                                                <input type="hidden" name="status_id" value="4">
-                                                <input type="hidden" name="tecnico_id" value="<?= $_SESSION['usuario_id_s'] ?>">
-                                                <button type="submit" class="btn btn-primary btn-sm btn-block">Aguardando terceirizada</button>
+                                                <select class="form-control" name="status_id" required>
+                                                    <option value="">Selecione...</option>
+                                                    <option value="4">Aguardando terceirizada</option>
+                                                    <option value="5">Aguardando usuário</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block">Gravar</button>
                                                 <div class="resposta-ajax"></div>
                                             </form>
                                         </div>
@@ -162,9 +167,33 @@ if ($chamado->status_id == 3){
                                                 <input type="hidden" name="_method" value="editar">
                                                 <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
                                                 <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
-                                                <input type="hidden" name="status_id" value="2">
-                                                <input type="hidden" name="tecnico_id" value="<?= $_SESSION['usuario_id_s'] ?>">
-                                                <button type="submit" class="btn btn-primary btn-sm btn-block">Em andamento</button>
+                                                <select class="form-control" name="status_id" required>
+                                                    <option value="">Selecione...</option>
+                                                    <option value="2">Em andamento</option>
+                                                    <option value="5">Aguardando usuário</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block">Gravar</button>
+                                                <div class="resposta-ajax"></div>
+                                            </form>
+                                        </div>
+                                        <div class="col-md">
+                                            <button class="btn btn-primary btn-sm btn-block" data-toggle="modal" data-target="#alterarStatus">
+                                                Fechado
+                                            </button>
+                                        </div>
+                                    <?php endif;?>
+                                    <?php if ($chamado->status_id == 5): ?>
+                                        <div class="col-md">
+                                            <form class="form-horizontal formulario-ajax" method="POST" action="<?= SERVERURL ?>ajax/chamadoAjax.php" role="form" data-form="update">
+                                                <input type="hidden" name="_method" value="editar">
+                                                <input type="hidden" name="id" value="<?= $chamadoObj->encryption($chamado->id) ?>">
+                                                <input type="hidden" name="data_progresso" value="<?= date('Y-m-d H:i:s') ?>">
+                                                <select class="form-control" name="status_id" required>
+                                                    <option value="">Selecione...</option>
+                                                    <option value="2">Em andamento</option>
+                                                    <option value="4">Aguardando terceirizada</option>
+                                                </select>
+                                                <button type="submit" class="btn btn-primary btn-sm btn-block">Gravar</button>
                                                 <div class="resposta-ajax"></div>
                                             </form>
                                         </div>
