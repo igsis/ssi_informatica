@@ -13,10 +13,10 @@ if (isset($_GET['busca'])){
 }
 else{
     if ($_SESSION['nivel_acesso_s'] == 2){
-        $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2");
+        $chamado = $chamadoObj->listaChamadoAdministrador($_SESSION['usuario_id_s'],"1,2,4,5");
     }
     else {
-        $chamado = $chamadoObj->listaChamadoTecnico($_SESSION['usuario_id_s'],"1,2");
+        $chamado = $chamadoObj->listaChamadoTecnico($_SESSION['usuario_id_s'],"1,2,4,5");
     }
 }
 ?>
