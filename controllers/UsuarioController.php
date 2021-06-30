@@ -69,7 +69,11 @@ class UsuarioController extends UsuarioModel
         $dados = [];
         $pagina = isset($_POST['pagina']) ? SERVERURL . $_POST['pagina'] : SERVERURL;
 
-        $dados['email1'] = $_POST['email1'] . "@prefeitura.sp.gov.br";
+        if ($_POST['instituicao_id'] == 11){ // CEU
+            $dados['email1'] = $_POST['email1'] . "@sme.prefeitura.sp.gov.br";
+        } else{
+            $dados['email1'] = $_POST['email1'] . "@prefeitura.sp.gov.br";
+        }
         $dados['publicado'] = 0;
 
 
@@ -130,7 +134,11 @@ class UsuarioController extends UsuarioModel
         $pagina = $_POST['pagina'];
         if ($pagina == "administrador/usuario_lista") {
             $id = MainModel::decryption($id);
-            $dados['email1'] = "{$dados['email1']}@prefeitura.sp.gov.br";
+            if ($_POST['instituicao_id'] == 11){ // CEU
+                $dados['email1'] = "{$dados['email1']}@sme.prefeitura.sp.gov.br";
+            } else{
+                $dados['email1'] = "{$dados['email1']}@prefeitura.sp.gov.br";
+            }
         }
 
         $dados = MainModel::limpaPost($dados);
